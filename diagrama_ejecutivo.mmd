@@ -1,33 +1,33 @@
 flowchart LR
 %% =========================================================================
 %% DIAGRAMA EJECUTIVO MACRO - PAS MUNICIPALIDAD PROVINCIAL DE CHICLAYO
-%% VISTA PANORÁMICA DE 4 MACRO-FASES + SISTEMA DE GARANTÍAS Y CONCLUSIONES
+%% VISTA PANORÁMICA DE 4 MACRO-FASES + RESPONSABLES POR ÁREA + RÉGIMEN DE PAGOS
 %% =========================================================================
 
-INI(["🏁 <b>INICIO PAS</b><br/><small>Campo o Denuncia</small>"]):::termStart
+INI(["🏁 <b>INICIO PAS</b><br/><small>Campo / Denuncia</small>"]):::termStart
 
 subgraph M1 ["1. DETECCIÓN Y CAMPO"]
-    D1["👮 <b>Fiscalización In Situ</b><br/><b>Papeleta de Infracción</b><br/><small>Subsanación o 60% dcto en 5 días</small>"]:::destacado
-    EXT1(["✅ <b>Conclusión Fase 1:</b><br/>• Cese in situ (Sin sanción)<br/>• Pago 60% dcto (5 días)<br/>• Archivo no identificado"]):::termOk
+    D1["👮 <b>Fiscalizador In Situ</b><br/><b>Papeleta de Infracción</b><br/><small>Dpto. Control Operacional<br/>Subgerente: Clausura Ley 31914</small>"]:::destacado
+    EXT1(["✅ <b>Conclusiones Fase 1:</b><br/>• Cese in situ (Sin falta)<br/>• <b>Pronto Pago: Paga 40% (60% Dcto.)</b> en 5 días sin descargos<br/>• Archivo sin identificar"]):::termOk
 end
 
 subgraph M2 ["2. INSTRUCCIÓN FORMAL"]
-    D2["⚖️ <b>Subgerencia Fiscalizadora</b><br/><b>Imputación + Descargos</b><br/><small>Emisión de IFI (Art. 41 RAS)</small>"]:::destacado
-    EXT2(["✅ <b>Conclusión Fase 2:</b><br/>• Archivo preliminar mérito<br/>• Pago 40% dcto previo inicio<br/>• Eximente pleno / Absolución<br/>• Archivo por Caducidad"]):::termOk
+    D2["⚖️ <b>Subgerencia Fiscalización</b><br/><b>Imputación + Descargos</b><br/><small>Dpto. Adm: Informe legal y descargos<br/>Subgerente: Res. Inicio, Cautelar e IFI</small>"]:::destacado
+    EXT2(["✅ <b>Conclusiones Fase 2:</b><br/>• <b>Pago Anticipado: Paga 60% (40% Dcto.)</b> previo a inicio<br/>• <b>Eximente Pleno: 0% Multa</b> por subsanación previa<br/>• <b>Atenuante: Paga 70% (30% Dcto.)</b> y no medida final<br/>• Descargos de ley: 5 días hábiles<br/>• Archivo por Caducidad (9 a 12 meses)"]):::termOk
 end
 
 subgraph M3 ["3. SANCIÓN Y RECURSOS"]
-    D3["🏛️ <b>Gerencia Sancionadora</b><br/><b>Resolución de Sanción</b><br/><small>Reconsideración y Apelación GM</small>"]:::destacado
-    EXT3(["✅ <b>Conclusión Fase 3:</b><br/>• Absolución en Gerencia<br/>• Pago 20% dcto (15 días)<br/>• Revocación 1ra o 2da instancia"]):::termOk
+    D3["🏛️ <b>Gerencia de Seg. Ciudadana</b><br/><b>Resolución de Sanción</b><br/><small>Notifica IFI (5 días alegatos)<br/>Resuelve Sanción y Reconsideración<br/>Gerente Municipal: Apelación 2da Inst.</small>"]:::destacado
+    EXT3(["✅ <b>Conclusiones Fase 3:</b><br/>• Absolución en Gerencia<br/>• <b>Pago Voluntario: Paga 80% (20% Dcto.)</b> en 15 días sin recursos<br/>• Revocación en Reconsideración (1ra Inst.)<br/>• Revocación en Apelación GM (Fin Vía)"]):::termOk
 end
 
 subgraph M4 ["4. EJECUCIÓN COACTIVA"]
-    D4["💰 <b>SATCH (Cobranza Forzosa)</b><br/><b>Resolución REC + Embargo</b><br/><small>Cobro de multa + costas legales</small>"]:::destacado
-    EXT4(["🏁 <b>Conclusión Fase 4:</b><br/>• Pago coactivo total (Extinción)<br/>• Ejecución forzosa consumada"]):::termWarn
+    D4["💰 <b>SAT Chiclayo (SATCH)</b><br/><b>Cobranza Coactiva Forzosa</b><br/><small>Ejecutor Coactivo: REC 7 días<br/>Cobro forzoso y medidas complementarias</small>"]:::destacado
+    EXT4(["🏁 <b>Conclusiones Fase 4:</b><br/>• <b>Pago Coactivo: 100% Multa + Costas</b><br/>• Embargo bancario y secuestro<br/>• Clausura forzosa y Demolición (GDU)<br/>• Onerosidad (Art. 84): Anulación"]):::termWarn
 end
 
-subgraph M5 ["🛡️ RÉGIMEN DE GARANTÍAS"]
-    G1["⏱️ <b>Caducidad:</b> 9 a 12 meses<br/>⚖️ <b>Prescripción:</b> 4 años<br/>⚡ <b>Medidas Cautelares / Clausura</b>"]:::alerta
+subgraph M5 ["🛡️ RÉGIMEN DE GARANTÍAS Y PAGOS"]
+    G1["⏱️ <b>Caducidad:</b> 9 a 12 meses<br/>⚖️ <b>Prescripción:</b> 4 años (Suspensión 25 días)<br/>💰 <b>Escala Pagos:</b> 40% (60% dcto) | 60% (40% dcto) | 70% (atenuante) | 80% (20% dcto) | 100% coactivo<br/>🚫 <b>Inhibición SAT:</b> Si hubo clausura temporal in situ"]:::alerta
 end
 
 INI ==>|"<span class='edge-info'>Detección</span>"| D1
@@ -38,7 +38,7 @@ D2 ==>|"<span class='edge-info'>Informe Final (IFI)</span>"| D3
 D3 -.-> EXT3
 D3 ==>|"<span class='edge-no'>Sanción Firme</span>"| D4
 D4 -.-> EXT4
-D2 -.->|"<span class='edge-warn'>Control de plazos</span>"| G1
+D2 -.->|"<span class='edge-warn'>Control legal</span>"| G1
 
 classDef termStart fill:#0284c7,stroke:#0369a1,stroke-width:3px,color:#ffffff,font-weight:bold
 classDef destacado fill:#eff6ff,stroke:#2563eb,stroke-width:2.5px,color:#1e3a8a,font-weight:bold

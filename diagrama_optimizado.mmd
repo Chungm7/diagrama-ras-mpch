@@ -1,321 +1,314 @@
 flowchart TD
 %% =========================================================================
-%% PROCEDIMIENTO ADMINISTRATIVO SANCIONADOR (PAS) - MUNICIPALIDAD PROVINCIAL DE CHICLAYO
-%% BASE NORMATIVA: RAS / CUIS / LEY N° 27444 / SATCH
-%% VERSIÓN OPTIMIZADA: MAPEO INTEGRAL DE CONCLUSIÓN POR FASE Y FLUJO SIN CRUCES
+%% PROCEDIMIENTO ADMINISTRATIVO SANCIONADOR (PAS) - MPCH
+%% REGLAMENTO DE APLICACIÓN DE SANCIONES (RAS MODIFICADO 2026)
+%% FLUJO INTEGRAL: CARGOS, ÁREAS, ACCIONES DEL ADMINISTRADO Y REGIMEN DE PAGOS
 %% =========================================================================
 
-INI(["🏁 <b>INICIO DEL PROCEDIMIENTO (PAS)</b><br/><small>Municipalidad Provincial de Chiclayo</small>"]):::termStart
+INI(["🏁 <b>INICIO DEL PROCEDIMIENTO (PAS)</b><br/><small>Municipalidad Provincial de Chiclayo • Jurisdicción Distrital</small>"]):::termStart
 
 %% =========================================================================
-%% FASE 1: DETECCIÓN Y FISCALIZACIÓN DE CAMPO
+%% FASE 1: DETECCIÓN Y FISCALIZACIÓN DE CAMPO (SUBGERENCIA DE FISCALIZACIÓN)
 %% =========================================================================
 subgraph FASE1 ["📡 FASE 1: DETECCIÓN Y FISCALIZACIÓN DE CAMPO (SUBGERENCIA DE FISCALIZACIÓN)"]
     direction TB
     
-    ORIG{"¿Canal de<br/>Detección?"}:::decision
-    OR_PATRULLA["🚓 <b>Patrullaje Municipal de Campo</b><br/><small>Inspección in situ ordinaria</small>"]:::proceso
-    OR2["📱 <b>Denuncia Ciudadana (App / SGD)</b><br/><small>Foto + geolocalización en tiempo real</small>"]:::proceso
-    OR3["☎️ <b>CECOM Central de Alertas</b><br/><small>Deriva denuncia a Subgerencia (Art. 24 RAS)</small>"]:::proceso
+    ORIG{"¿Canal de Detección<br/>de la Infracción?"}:::decision
+    OR_PATRULLA["🚓 <b>Patrullaje Municipal de Campo</b><br/><small>Dpto. de Fiscalización y Control Operacional (Art. 4.9, 5.1.a)</small>"]:::proceso
+    OR_APP["📱 <b>Denuncia Digital: Chiclayo Reporta</b><br/><small>Monitoreada por CECOM - Central de Comunicaciones (Art. 24)</small>"]:::proceso
+    OR_MESA["🏛️ <b>Mesa de Partes Municipal</b><br/><small>Servidor recepciona denuncia escrita o levanta acta verbal (Art. 24)</small>"]:::proceso
 
-    F1["👮 <b>Inspección in situ (Fiscalizador)</b><br/><small>Captura de evidencia objetiva (acta, fotos, sonómetro)</small>"]:::destacado
-    
-    D1_FISC{"¿Administrado subsana<br/>la falta in situ?"}:::decision
-    E1(["✅ <b>Abstención de Imposición</b><br/><small>Acta de Verificación y Cese in situ</small><br/><code>📌 CERRADO_SIN_INFRACCION</code>"]):::termOk
-    
-    D2_FISC{"¿Se logra identificar<br/>al infractor?"}:::decision
-    F2["🔍 <b>Indagación Previa de Oficio</b><br/><small>Acta con testigos / Cruce interinstitucional</small>"]:::proceso
-    D3_FISC{"¿Identificado tras<br/>las indagaciones?"}:::decision
-    E2(["🗄️ <b>Archivo por No Identificación</b><br/><small>Informe de imposibilidad de imputación</small><br/><code>📌 ARCHIVADO_SIN_IDENTIFICAR</code>"]):::termWarn
-    
-    F3["📄 <b>Imposición de Papeleta de Infracción</b><br/><small>Acta de Fiscalización (Anexo II RAS) y conminación</small><br/><code>📌 PAPELETA_IMPUESTA</code>"]:::destacado
-    
-    D_PAGO1{"¿Opta por pago inmediato<br/>con 60% de descuento?<br/><small>(Art. 16.a RAS - 5 días hábiles)</small>"}:::decision
-    T1_PRONTO(["✅ <b>Conclusión por Pago Inmediato (60% Dcto.)</b><br/><small>Art. 16.a RAS: Cancela sin presentar descargos</small><br/><code>📌 CONCLUIDO_PAGO_PRONTO_PAGO_60</code>"]):::termOk
+    RRHH_NOT["📋 <b>Resolución de Gerencia de RR.HH.</b><br/><small>Designa y acredita a Fiscalizadores con fotocheck y RAS/CUIS (Disp. Final 7ma)</small>"]:::nota
 
-    F3_MEDIDAS[["⚡ <b>¿Aplica Medida Complementaria Inmediata?</b><br/><small>Clausura, Retención, Decomiso o Paralización</small><br/>➡️ <i>(Ver Módulo: Procedimientos Especiales)</i>"]]:::salto
+    F1["👮 <b>Fiscalizador Municipal In Situ</b><br/><small>Acreditado formalmente. Acompañan Inspectores Técnicos (Sanidad, Obras, etc. Art. 4.7)</small>"]:::destacado
+    
+    ADM_FACILIDADES["🧑💼 <b>ADMINISTRADO FISCALIZADO:</b><br/><small>Se identifica con DNI, brinda facilidades (Art. 28) o presenta pruebas en 5 días (Art. 27.e, 34)</small>"]:::admin
 
-    S1_SEC["🗂️ <b>Registro y Derivación SGD</b><br/><small>Expediente pasa al Asesor Legal tras plazo de gracia (Art. 34 RAS)</small><br/><code>📌 REGISTRADO_Y_DERIVADO</code>"]:::proceso
+    D1_FISC{"¿Administrado subsana<br/>la conducta in situ?"}:::decision
+    E1(["✅ <b>Abstención de Imposición</b><br/><small>Fiscalizador suscribe Acta de Verificación de conformidad</small><br/><code>📌 CERRADO_SIN_INFRACCION</code>"]):::termOk
+    
+    D2_FISC{"¿Se logra identificar<br/>al presunto infractor?"}:::decision
+    F2["🔍 <b>Indagación Previa de Identificación</b><br/><small>Fiscalizador redacta Acta de Verificación con testigos presenciales (Art. 30.1.i)</small>"]:::proceso
+    D3_FISC{"¿Identificado tras cruce<br/>con dependencias estatales?"}:::decision
+    E2(["🗄️ <b>Archivo por No Identificación</b><br/><small>Fiscalizador remite informe sustentado de archivo a Subgerencia (Art. 30.1.iii)</small><br/><code>📌 ARCHIVADO_SIN_IDENTIFICAR</code>"]):::termWarn
+    
+    F3["📄 <b>Imposición de Papeleta de Infracción</b><br/><small>Fiscalizador Municipal notifica in situ Acta de Fiscalización (Arts. 29, 33)</small><br/><code>📌 PAPELETA_IMPUESTA</code>"]:::destacado
+    
+    F3_MEDIDAS[["⚡ <b>Medidas Correctivas Inmediatas al Término de Fiscalización (Art. 64)</b><br/><small>• Subgerente de Fiscalización: Acta de Clausura Temporal (Ley 31914 / Art. 65.a)<br/>• Fiscalizador: Acta de Paralización de Obra (Art. 30.3, 70)<br/>• Policía Municipal: Retención de Bienes en vía pública (Art. 66)<br/>• Subgerencia de Sanidad: Decomiso y Destrucción de alimentos no aptos (Art. 67)</small><br/>➡️ <i>(Ver Módulo: Procedimientos Especiales)</i>"]]:::salto
+    
+    INHIB_SATCH["🚫 <b>Inhibición Legal de Cobro SATCH (Art. 17):</b><br/><small>Si se aplicó Clausura Temporal in situ, SAT Chiclayo se inhibe del cobro de papeleta</small>"]:::alerta
+
+    D_PAGO1{"🧑💼 <b>ADMINISTRADO: ¿Opta por Pronto Pago?</b><br/><small>Art. 16.a RAS: Plazo de 5 días hábiles tras la papeleta</small>"}:::decision
+    T1_PRONTO(["💰 <b>PAGO PRONTO PAGO: PAGA EL 40% (60% DESCUENTO)</b><br/><small>Art. 16.a RAS: Cancela al contado en 5 días hábiles SIN ingresar descargos</small><br/><code>📌 CONCLUIDO_PRONTO_PAGO_40</code>"]):::pago
+
+    S1_SEC["🗂️ <b>Derivación a Etapa Instructora</b><br/><small>Fiscalizador remite papeletas, actas e informes diarios a Subgerencia (Art. 5.1.d)</small><br/><code>📌 REGISTRADO_Y_DERIVADO</code>"]:::proceso
 end
 
 %% =========================================================================
 %% FASE 2: INSTRUCCIÓN FORMAL (SUBGERENCIA DE FISCALIZACIÓN)
 %% =========================================================================
-subgraph FASE2 ["⚖️ FASE 2: INSTRUCCIÓN FORMAL (SUBGERENCIA DE FISCALIZACIÓN)"]
+subgraph FASE2 ["⚖️ FASE 2: INSTRUCCIÓN FORMAL (SUBGERENCIA DE FISCALIZACIÓN - ÓRGANO INSTRUCTOR)"]
     direction TB
     
-    L1_ASESOR1["⚖️ <b>Control de Legalidad y Calificación</b><br/><small>Asesor Legal evalúa papeleta, pruebas y plazo de gracia</small>"]:::proceso
+    L1_DEP_ADM["⚖️ <b>Dpto. Administrativo (Subgerencia Fiscalización)</b><br/><small>Abogados recepcionan expediente, sistematizan y efectúan control de legalidad (Art. 4.9)</small>"]:::proceso
     
-    D4_EVAL1{"¿Existen elementos<br/>para iniciar PAS?"}:::decision
-    E3(["🗄️ <b>Archivo Preliminar por Falta de Mérito</b><br/><small>No se inicia PAS por causal de atipicidad o nulidad</small><br/><code>📌 ARCHIVADO_PRELIMINAR</code>"]):::termWarn
-    
-    L2_INICIO["📝 <b>Proyección de Resolución de Inicio</b><br/><small>Informe Legal + Proyecto de Imputación de Cargos</small><br/><code>📌 EN_EVALUACION_INICIO</code>"]:::proceso
-    
-    D_PAGO2{"¿Cancela multa con 40% dcto.<br/>antes de emitir Inicio?<br/><small>(Art. 16.b RAS)</small>"}:::decision
-    T2_PAGO_ANT(["✅ <b>Conclusión por Pago Anticipado (40% Dcto.)</b><br/><small>Art. 16.b RAS: Cancela previo a imputación formal</small><br/><code>📌 CONCLUIDO_PAGO_ANTICIPADO_40</code>"]):::termOk
+    D_PAGO2{"🧑💼 <b>ADMINISTRADO: ¿Opta por Pago Anticipado?</b><br/><small>Art. 16.b RAS: Del día 6 hasta antes de notificar Inicio del PAS</small>"}:::decision
+    T2_PAGO_ANT(["💰 <b>PAGO ANTICIPADO: PAGA EL 60% (40% DESCUENTO)</b><br/><small>Art. 16.b RAS: Cancela al contado previo a imputación formal SIN presentar descargos</small><br/><code>📌 CONCLUIDO_PAGO_ANTICIPADO_60</code>"]):::pago
 
-    D5_EXIM{"¿Acredita regularización voluntaria<br/>anterior a Resolución de Inicio?<br/><small>(Art. 257 Ley N° 27444)</small>"}:::decision
-    
-    subgraph SUB_EXIMENTE ["⚖️ Régimen de Eximentes y Atenuantes (Art. 257 TUO Ley 27444)"]
-        EX2{"¿Momento de acreditación<br/>de subsanación voluntaria?"}:::decision
-        EX3["<b>Bifurcación 1: Previo a Redacción</b><br/><small>Asesor proyecta y Subgerente firma Res. de Conclusión</small>"]:::proceso
-        EX4["<b>Bifurcación 2: Posterior a Notificación</b><br/><small>Presenta documento tras ser notificado</small>"]:::proceso
-        EX5{"¿Fecha documental es<br/>ANTERIOR al Inicio?"}:::decision
-        EX6(["✅ <b>Conclusión por Eximente Pleno</b><br/><small>Archivo sin multa ni registro de infractor</small><br/><code>📌 CONCLUIDO_EXIMENTE_PLENO</code>"]):::termOk
-        EX7["⚠️ <b>Canaliza como ATENUANTE (-30%)</b><br/><small>Regularizó después del inicio pero antes de IFI</small>"]:::alerta
-    end
-    
-    SG1_EMITE["🖋️ <b>Emisión de Resolución de Inicio</b><br/><small>Subgerente de Fiscalización suscribe imputación formal</small><br/><code>📌 INICIO_EMITIDO</code>"]:::destacado
-    
-    N1_NOTIF1["📬 <b>Notificación de Imputación de Cargos</b><br/><small>Domicilio real o casilla electrónica (máx. 5 días hábiles)</small><br/><code>📌 INICIO_NOTIFICADO</code>"]:::proceso
-    
-    CAD_START[["⏱️ <b>Disparo de Cronómetro de Caducidad</b><br/><small>Cómputo perentorio de 9 meses (Art. 62 RAS / Ley 27444)</small><br/>➡️ <i>(Ver Módulo: Control de Caducidad)</i>"]]:::alerta
-    T2_CADUCIDAD(["⏱️ <b>Archivo por Caducidad del PAS</b><br/><small>Art. 62 RAS: Exceso de 9 meses sin resolver el fondo</small><br/><code>📌 ARCHIVADO_POR_CADUCIDAD</code>"]):::alerta
+    D5_EXIM{"🧑💼 <b>ADMINISTRADO: ¿Acredita subsanación previa?</b><br/><small>Voluntaria antes de notificación de inicio (Arts. 39.e, 40 RAS)</small>"}:::decision
+    EX_PLENO(["✅ <b>EXIMENTE PLENO: PAGA 0% (SIN MULTA NI SANCIÓN)</b><br/><small>Subgerente emite resolución disponiendo conclusión y archivo sin registro de infractor</small><br/><code>📌 CONCLUIDO_EXIMENTE_PLENO_0</code>"]):::termOk
 
-    D6_ADM1{"¿Administrado formula<br/>descargos de ley?<br/><small>Plazo perentorio: 5 días hábiles</small>"}:::decision
-    A1_DESC1["🧑💼 <b>Presentación de Escrito de Descargos</b><br/><small>Medios probatorios ingresados por Mesa de Partes</small><br/><code>📌 EN_PLAZO_DESCARGO_1</code>"]:::proceso
-    NT5_SILENCIO["⏱️ <b>Vencimiento en Rebeldía / Silencio</b><br/><small>Trámite continúa de oficio sin descargos (Arts. 37.e, 38 RAS)</small>"]:::proceso
+    D4_EVAL1{"¿Dpto. Administrativo verifica indicios<br/>y mérito para abrir el PAS?"}:::decision
+    E3(["🗄️ <b>Resolución de Improcedencia de Inicio</b><br/><small>Subgerente suscribe archivo por atipicidad, prescripción o causales Art. 36 RAS</small><br/><code>📌 ARCHIVADO_IMPROCEDENTE</code>"]):::termWarn
     
-    L3_EVAL["⚖️ <b>Evaluación de Descargos y Actuación Probatoria</b><br/><small>Asesor Legal merita descargos, alegaciones e informes</small>"]:::proceso
+    L2_INFORME_LEGAL["📝 <b>Informe Legal de Apertura</b><br/><small>Dpto. Administrativo proyecta hechos imputados, norma vulnerada y posibles sanciones (Art. 4.9, 37)</small>"]:::proceso
+    
+    SG1_EMITE["🖋️ <b>Resolución de Inicio del PAS (Art. 37 RAS)</b><br/><small>Subgerente de Fiscalización suscribe imputación formal y confiere 5 días para descargos</small><br/><code>📌 INICIO_PAS_EMITIDO</code>"]:::destacado
+    
+    SG_CAUTELAR["🛡️ <b>Medidas Cautelares Provisionales de Oficio (Art. 76)</b><br/><small>Subgerente emite resolución cautelar previa opinión legal para asegurar resolución final</small>"]:::proceso
+    CAUT_APEL["🧑💼 <b>ADMINISTRADO: Apelación Cautelar (Art. 79)</b><br/><small>Plazo 3 días calendario ante Subgerente. Gerente de Seg. Ciudadana resuelve en 2 días</small>"]:::admin
 
-    D_IFI_PROP{"¿Sentido del pronunciamiento<br/>del Órgano Instructor?"}:::decision
-    T2_ABSOL_IFI(["✅ <b>Conclusión por Absolución de Cargos</b><br/><small>Desvirtúa falta imputada o no existe responsabilidad</small><br/><code>📌 CONCLUIDO_ABSOLUCION</code>"]):::termOk
+    N1_NOTIF1["📬 <b>Notificación Formal del Inicio del PAS</b><br/><small>Personal Notificador entrega en domicilio real, bajo puerta o casilla electrónica (Arts. 54-56)</small><br/><code>📌 INICIO_NOTIFICADO</code>"]:::proceso
+    
+    CAD_START[["⏱️ <b>Disparo del Plazo de Caducidad (Art. 62 RAS)</b><br/><small>9 meses perentorios (+3 prorrogables). Suspensión de prescripción (Art. 61)</small><br/>➡️ <i>(Ver Módulo: Control de Caducidad)</i>"]]:::alerta
+    T2_CADUCIDAD(["⏱️ <b>Archivo por Caducidad del PAS</b><br/><small>Art. 62 RAS: Exceso de plazo sin resolver el fondo genera caducidad automática</small><br/><code>📌 ARCHIVADO_POR_CADUCIDAD</code>"]):::alerta
 
-    D7_ATEN{"¿Acredita regularización<br/>con efecto Atenuante?"}:::decision
-    NT6_ATEN["📝 <b>Constancia de Atenuante:</b> Aplica -30% y cancelación de<br/>medida no pecuniaria en la Resolución de Sanción"]:::nota
+    D6_ADM1{"🧑💼 <b>ADMINISTRADO: ¿Formula descargos al Inicio?</b><br/><small>Plazo perentorio: 5 días hábiles (Art. 38 RAS)</small>"}:::decision
+    A1_DESC1["🧑💼 <b>Presentación de Escrito de Descargos</b><br/><small>Ingresa medios probatorios y argumentos por Mesa de Partes (Art. 38)</small><br/><code>📌 DESCARGO_INICIO_INGRESADO</code>"]:::admin
+    NT5_SILENCIO["⏱️ <b>Vencimiento en Rebeldía / Silencio</b><br/><small>Vencen 5 días sin descargos: trámite probatorio continúa de oficio (Art. 35, 42)</small>"]:::proceso
     
-    D8_APOYO{"¿Requiere informe pericial<br/>de área técnica de apoyo?<br/><small>(Sanidad, Defensa Civil, Obras)</small>"}:::decision
-    
-    subgraph SUB_APOYO ["🏢 Intervención de Áreas de Apoyo Técnico"]
-        AP1["Recepción de requerimiento pericial"]:::proceso
-        D9_APOYO{"¿Área responde en<br/>plazo razonable?"}:::decision
-        ALERT1["⚠️ <b>PUNTO CIEGO CRÍTICO DE AUDITORÍA</b><br/><small>Sin plazos internos coactivos: demoras consumen caducidad</small>"]:::alerta
-    end
-    
-    L4_PROYECTA["📝 <b>Proyección de Informe Final de Instrucción (IFI)</b><br/><small>Recomienda sanción o medidas correctivas</small><br/><code>📌 IFI_PROYECTADO</code>"]:::proceso
-    
-    SG2_IFI["🖋️ <b>Aprobación y Suscripción del IFI</b><br/><small>Subgerente concluye fase instructora y remite</small><br/><code>📌 IFI_ELABORADO</code>"]:::destacado
-    
-    N2_NOTIF2["📬 <b>Notificación Formal del IFI</b><br/><small>Garantía de defensa: abre plazo de 5 días para alegatos finales</small><br/><code>📌 IFI_NOTIFICADO</code>"]:::proceso
+    D7_ATEN{"🧑💼 <b>ADMINISTRADO: ¿Configura Régimen Atenuante?</b><br/><small>Art. 41: Reconocimiento expreso por escrito o subsanación voluntaria post-inicio antes de IFI</small>"}:::decision
+    NT6_ATEN["💰 <b>RÉGIMEN ATENUANTE: PAGA EL 70% (30% DESCUENTO)</b><br/><small>Art. 41 RAS: Multa rebajada al 70% y MPCH se inhibe de aplicar medida complementaria final</small><br/><code>📌 APLICA_ATENUANTE_30</code>"]:::pago
+
+    L3_EVAL["⚖️ <b>Dpto. Administrativo: Calificación y Opinión Legal IFI</b><br/><small>Merita descargos, pruebas y requiere peritajes a áreas técnicas de apoyo (Art. 6, 35)</small>"]:::proceso
+
+    D_IFI_PROP{"¿Sentido de la Opinión Legal<br/>del Dpto. Administrativo?"}:::decision
+    T2_ABSOL_IFI(["✅ <b>Propuesta de Absolución y Archivo</b><br/><small>Se desvirtúan cargos en instrucción</small><br/><code>📌 IFI_PROPONE_ABSOLUCION</code>"]):::termOk
+
+    SG2_IFI["🖋️ <b>Emisión del Informe Final de Instrucción (IFI)</b><br/><small>Subgerente de Fiscalización aprueba y suscribe motivadamente el IFI (Arts. 42, 43)</small><br/><code>📌 IFI_EMITIDO</code>"]:::destacado
 end
 
 %% =========================================================================
-%% FASE 3: DECISIÓN SANCIONADORA Y RECURSOS
+%% FASE 3: DECISIÓN SANCIONADORA Y RECURSOS (GERENCIA SANCIONADORA Y GM)
 %% =========================================================================
-subgraph FASE3 ["🏛️ FASE 3: DECISIÓN SANCIONADORA Y RECURSOS (GERENCIA / 2DA INSTANCIA)"]
+subgraph FASE3 ["🏛️ FASE 3: DECISIÓN SANCIONADORA Y ETAPA RECURSIVA (GERENCIA SANCIONADORA Y GERENCIA MUNICIPAL)"]
     direction TB
     
-    D1_DESC2{"¿Presenta alegatos finales<br/>contra el IFI?<br/><small>Plazo: 5 días hábiles</small>"}:::decision
-    A1_DESC2["🧑💼 <b>Alegatos Finales al IFI</b><br/><code>📌 EN_PLAZO_DESCARGO_2</code>"]:::proceso
-    NT1_DESC2["⏱️ <b>Sin alegatos:</b> Expediente igual se eleva<br/>a Gerencia para resolver (Art. 42.b RAS)"]:::proceso
+    G_TRASLADO["🏛️ <b>Gerencia de Seguridad Ciudadana y Fiscalización</b><br/><small>Órgano Sancionador recepciona IFI y expediente completo foliado (Art. 4.10, 5.2)</small>"]:::proceso
     
-    S1_MESA2["🗂️ <b>Foliación y Derivación a Gerencia</b><br/><small>Expediente integral remitido al Órgano Sancionador</small><br/><code>📌 DERIVADO_A_GERENCIA</code>"]:::proceso
-    
-    L1_GESTOR["⚖️ <b>Evaluación de Fondo por Gerencia</b><br/><small>Revisión jurídica del IFI, expediente y alegatos</small><br/><code>📌 EN_RESOLUCION_FINAL</code>"]:::proceso
+    N2_NOTIF2["📬 <b>Notificación Formal del IFI al Administrado</b><br/><small>Gerente de Seguridad Ciudadana notifica el IFI confiriendo 5 días hábiles (Arts. 5.2.c, 43)</small><br/><code>📌 IFI_NOTIFICADO</code>"]:::destacado
 
-    D_GER_DEC{"¿Decisión del Órgano<br/>Sancionador?"}:::decision
-    T3_ABSOL_GER(["✅ <b>Resolución de Absolución y Archivo</b><br/><small>Gerente desestima cargos y ordena archivo definitivo</small><br/><code>📌 CONCLUIDO_ABSOLUCION_GERENCIA</code>"]):::termOk
+    D1_DESC2{"🧑💼 <b>ADMINISTRADO: ¿Formula alegatos finales?</b><br/><small>Plazo de ley: 5 días hábiles tras notificación de IFI (Art. 43 RAS)</small>"}:::decision
+    A1_DESC2["🧑💼 <b>Presentación de Alegatos Finales al IFI</b><br/><small>Ingresa descargos a conclusiones del IFI por Mesa de Partes</small><br/><code>📌 ALEGATOS_IFI_INGRESADOS</code>"]:::admin
+    NT1_DESC2["⏱️ <b>Sin alegatos finales:</b> Expediente queda expedito para emitir resolución de fondo"]:::proceso
 
-    G1_SANCION["🔨 <b>Resolución de Sanción Gerencial</b><br/><small>Gerente de Seg. Ciudadana resuelve en máx. 30 días hábiles</small><br/><code>📌 RESOLUCION_EMITIDA</code>"]:::destacado
+    G_ACT_COMP{"¿Gerente dispone actuaciones<br/>probatorias complementarias?<br/><small>(Art. 45 RAS - Excepcional)</small>"}:::decision
     
-    N1_NOTIFG["📬 <b>Notificación de Resolución de Sanción</b><br/><small>Abre plazo perentorio de 15 días hábiles para pago o recurso</small><br/><code>📌 RESOLUCION_NOTIFICADA</code>"]:::proceso
-    
-    D3_PAGOVOL{"¿Opta por pago voluntario<br/>con descuento?<br/><small>20% dcto. en 15 días hábiles</small>"}:::decision
-    T1_PAGOVOL(["✅ <b>Conclusión por Pago Voluntario (20% Dcto.)</b><br/><small>Cierre y archivo definitivo por pago extintivo</small><br/><code>📌 CONCLUIDO_PAGO_VOLUNTARIO_20</code>"]):::termOk
-    
-    D4_RECURSO{"¿Interpone recurso administrativo<br/>de impugnación?<br/><small>Plazo perentorio: 15 días hábiles</small>"}:::decision
-    S2_FIRMEZA["📜 <b>Declaración de Firmeza Ordinaria</b><br/><small>Vencen 15 días sin recurso: Gerencia emite Acto de Firmeza</small><br/><code>📌 RESOLUCION_FIRME</code>"]:::alerta
+    G_EVAL_FINAL["⚖️ <b>Evaluación Resolutiva de Fondo</b><br/><small>Gerente de Seg. Ciudadana revisa IFI, descargos y pruebas (previo informe legal Art. 44)</small>"]:::proceso
 
-    D5_INDIVREC{"¿Recurso cumple requisitos<br/>formales y de admisibilidad?"}:::decision
-    REQ1_SUB["📝 <b>Requerimiento de Subsanación</b><br/><small>Plazo legal improrrogable: 2 días hábiles</small>"]:::alerta
-    D6_SUBSANA{"¿Subsana dentro de<br/>los 2 días hábiles?"}:::decision
-    IMPROC(["🛑 <b>Recurso Improcedente</b><br/><small>Rechazo liminar: sanción queda firme de pleno derecho</small><br/><code>📌 RECURSO_IMPROCEDENTE</code>"]):::termWarn
+    D_GER_DEC{"¿Decisión del Gerente de<br/>Seguridad Ciudadana y Fiscalización?"}:::decision
+    T3_ABSOL_GER(["✅ <b>Resolución de Absolución y Archivo</b><br/><small>Gerente desestima cargos y ordena archivo definitivo del PAS</small><br/><code>📌 CONCLUIDO_ABSOLUCION_GERENCIA</code>"]):::termOk
+
+    G1_SANCION["🔨 <b>Resolución de Sanción Administrativa (Art. 46)</b><br/><small>Gerente de Seg. Ciudadana impone multa y medidas finales: Clausura definitiva, Demolición (Art. 73) o Revocatoria (Art. 74)</small><br/><code>📌 RESOLUCION_SANCION_EMITIDA</code>"]:::destacado
     
+    N1_NOTIFG["📬 <b>Notificación Formal de Resolución de Sanción</b><br/><small>Abre plazo perentorio de 15 días hábiles para pago voluntario o impugnación (Art. 46.c)</small><br/><code>📌 SANCION_NOTIFICADA</code>"]:::proceso
+
+    D3_PAGOVOL{"🧑💼 <b>ADMINISTRADO: ¿Opta por Pago Voluntario?</b><br/><small>Art. 16.c RAS: En 15 días hábiles de notificada la sanción</small>"}:::decision
+    T1_PAGOVOL(["💰 <b>PAGO VOLUNTARIO: PAGA EL 80% (20% DESCUENTO)</b><br/><small>Art. 16.c RAS: Cancela al contado en 15 días hábiles SIN interponer recursos</small><br/><code>📌 CONCLUIDO_PAGO_VOLUNTARIO_80</code>"]):::pago
+
+    D4_RECURSO{"🧑💼 <b>ADMINISTRADO: ¿Interpone Recurso Administrativo?</b><br/><small>Plazo perentorio: 15 días hábiles (Art. 47 RAS)</small>"}:::decision
+    S2_FIRMEZA["📜 <b>Declaración de Firmeza Ordinaria</b><br/><small>Vencen 15 días sin recurso ni pago: Gerente de Seg. Ciudadana emite acto de firmeza</small><br/><code>📌 RESOLUCION_FIRME_ORDINARIA</code>"]:::alerta
+
+    D5_INDIVREC{"¿Recurso individualiza impugnación<br/>y cumple requisitos formales?"}:::decision
+    REQ1_SUB["📝 <b>Requerimiento de Subsanación (Art. 48)</b><br/><small>Gerente cursa requerimiento al administrado (plazo: 2 días hábiles)</small>"]:::alerta
+    D6_SUBSANA{"🧑💼 <b>ADMINISTRADO: ¿Subsana omisión en 2 días?</b>"}:::decision
+    IMPROC(["🛑 <b>Resolución de Improcedencia</b><br/><small>Rechazo liminar: sanción queda firme de pleno derecho y pasa a coactiva</small><br/><code>📌 RECURSO_IMPROCEDENTE</code>"]):::termWarn
+
     D7_TIPOREC{"¿Qué recurso administrativo<br/>interpone el administrado?"}:::decision
-    
-    subgraph SUB_RECURSOS ["⚖️ Procedimiento de Recursos Impugnativos (Ley 27444)"]
-        RECON1_RES["🏛️ <b>Trámite de Reconsideración</b><br/><small>Gerente de Seg. Ciudadana resuelve (exige nueva prueba instrumental)</small>"]:::proceso
-        D8_RECONCONF{"¿Gerencia confirma<br/>la sanción original?"}:::decision
-        REVMOD1(["✅ <b>Sanción Revocada / Modificada</b><br/><small>Se deja sin efecto o reduce en Reconsideración</small><br/><code>📌 ARCHIVADO_REVOCACION_1RA</code>"]):::termOk
-        D8b_APELA{"¿Administrado interpone<br/>Apelación en 15 días?"}:::decision
 
-        APEL1_ELEV["⚖️ <b>Elevación a Segunda Instancia</b><br/><small>Remisión inmediata de actuados a Gerencia Municipal</small>"]:::proceso
-        J1_JURIDICA["📖 <b>Dictamen de Asesoría Jurídica (OGAJ)</b><br/><small>Opinión técnico-legal de última instancia</small>"]:::proceso
-        M1_GM["🏛️ <b>Resolución de Gerencia Municipal</b><br/><small>Segunda Instancia: Fin de la Vía Administrativa</small>"]:::destacado
-        
-        S_RECON_FIRME["📜 <b>Firmeza en Reconsideración</b><br/><small>Resolución consentida por falta de apelación en 15 días</small><br/><code>📌 RESOLUCION_FIRME_RECON</code>"]:::alerta
-        D9_APELCONF{"¿Gerencia Municipal<br/>confirma la sanción?"}:::decision
-        REVMOD2(["✅ <b>Sanción Revocada en 2da Instancia</b><br/><small>Se deja sin efecto en última instancia</small><br/><code>📌 ARCHIVADO_REVOCACION_2DA</code>"]):::termOk
-        S3_FIRME["📜 <b>Firmeza en Segunda Instancia</b><br/><small>Vía administrativa definitivamente agotada</small><br/><code>📌 RESOLUCION_FIRME_2DA</code>"]:::alerta
-    end
+    RECON1_RES["🏛️ <b>Recurso de Reconsideración (Art. 49)</b><br/><small>Administrado adjunta NUEVA PRUEBA instrumental. Gerente de Seg. Ciudadana resuelve en 15 días</small>"]:::proceso
+    D8_RECONCONF{"¿Gerente de Seguridad Ciudadana<br/>confirma la sanción original?"}:::decision
+    REVMOD1(["✅ <b>Sanción Revocada en Reconsideración</b><br/><small>Gerente acoge nueva prueba y deja sin efecto la multa y medidas</small><br/><code>📌 ARCHIVADO_REVOCACION_1RA</code>"]):::termOk
+    D8b_APELA{"🧑💼 <b>ADMINISTRADO: ¿Apela en 15 días hábiles?</b>"}:::decision
+    S_RECON_FIRME["📜 <b>Firmeza por Consentimiento en 1ra Instancia</b><br/><small>No apela en 15 días tras reconsideración: resolución firme</small><br/><code>📌 RESOLUCION_FIRME_RECON</code>"]:::alerta
+
+    APEL1_ELEV["⚖️ <b>Recurso de Apelación (Art. 50)</b><br/><small>Puro derecho o distinta interpretación de pruebas. Gerente eleva a Gerencia Municipal (Art. 5.2.d)</small>"]:::proceso
+    M1_GM["🏛️ <b>Resolución de Gerencia Municipal (Art. 4.4, 5.3)</b><br/><small>Gerente Municipal evalúa y resuelve en última instancia: AGOTA LA VÍA ADMINISTRATIVA</small>"]:::destacado
+    D9_APELCONF{"¿Gerente Municipal<br/>confirma la sanción?"}:::decision
+    REVMOD2(["✅ <b>Sanción Revocada en 2da Instancia</b><br/><small>Gerente Municipal declara fundado el recurso: archivo definitivo</small><br/><code>📌 ARCHIVADO_REVOCACION_2DA</code>"]):::termOk
+    S3_FIRME["📜 <b>Resolución Firme con Vía Administrativa Agotada</b><br/><small>Gerencia Municipal devuelve expediente a Gerencia de Seg. Ciudadana para cobro coactivo (Art. 5.3.d)</small><br/><code>📌 VIA_ADMINISTRATIVA_AGOTADA</code>"]:::alerta
 end
 
 %% =========================================================================
-%% FASE 4: EJECUCIÓN COACTIVA
+%% FASE 4: EJECUCIÓN COACTIVA Y EXTINCIÓN (SATCH)
 %% =========================================================================
-subgraph FASE4 ["🚨 FASE 4: EJECUCIÓN COACTIVA (SATCH)"]
+subgraph FASE4 ["🚨 FASE 4: EJECUCIÓN COACTIVA Y EXTINCIÓN (SERVICIO DE ADMINISTRACIÓN TRIBUTARIA - SATCH)"]
     direction TB
     
-    EC1["⚔️ <b>Derivación con Oficio y Título de Firmeza</b><br/><small>Remisión formal al SATCH para cobranza forzosa</small><br/><code>📌 DERIVADO_A_COACTIVA</code>"]:::destacado
-    EC2["🔔 <b>Resolución de Ejecución Coactiva (REC)</b><br/><small>Ejecutor Coactivo notifica requerimiento (plazo 7 días)</small><br/><code>📌 EN_EJECUCION_COACTIVA</code>"]:::destacado
+    EC1["⚔️ <b>Oficio de Remisión al SATCH (Art. 5.2.e, 81)</b><br/><small>Gerente de Seg. Ciudadana oficia expediente sancionador con título ejecutivo al SAT Chiclayo</small><br/><code>📌 DERIVADO_A_COACTIVA</code>"]:::destacado
     
-    EC3{"¿El deudor efectúa el pago<br/>de multa + costas coactivas?"}:::decision
-    EC4["🏦 <b>Pago en Ventanilla / Caja SATCH</b><br/><small>Cancelación de Cancelación Total de Deuda Coactiva</small><br/><code>📌 MULTA_PAGADA_COACTIVA</code>"]:::proceso
-    EC5(["✅ <b>Extinción y Archivo Definitivo del PAS</b><br/><small>Levantamiento total de gravámenes y medidas cautelares</small><br/><code>📌 ARCHIVADO_DEFINITIVO</code>"]):::termOk
+    D_ONEROSO{"¿SATCH declara la multa como<br/>de Recuperación Onerosa?<br/><small>(Art. 84 RAS: costo supera cobranza)</small>"}:::decision
+    T_ONEROSA(["🗄️ <b>Anulación por Onerosidad (Art. 84)</b><br/><small>Resolución motivada del SATCH anula la multa por ser antieconómica su recuperación</small><br/><code>📌 ANULADA_POR_ONEROSIDAD</code>"]):::termWarn
+
+    EC2["🔔 <b>Resolución de Ejecución Coactiva - REC (Art. 82)</b><br/><small>Ejecutor Coactivo (Dpto. Ejecución Coactiva) notifica requerimiento con 7 días hábiles de plazo</small><br/><code>📌 REC_NOTIFICADA</code>"]:::destacado
     
-    NT_EMBARGO["🚨 <b>Medidas Cautelares de Embargo Coactivo:</b><br/>Retención de cuentas bancarias, secuestro conservativo e inscripción"]:::alerta
-    EC_FORZOSA(["🛑 <b>Conclusión por Ejecución Forzosa</b><br/><small>Satisfacción coactiva completa del crédito o clausura ejecutada</small><br/><code>📌 CONCLUIDO_EJECUCION_FORZOSA</code>"]):::termWarn
+    D_COACT_PAGA{"🧑💼 <b>ADMINISTRADO: ¿Cancela deuda en Coactiva?</b><br/><small>Exigible 100% de la multa + costas y gastos procesales liquidados</small>"}:::decision
+    EC4["🏦 <b>Pago en Ventanilla SATCH: PAGA EL 100% + COSTAS</b><br/><small>Cancelación íntegra de multa oficializada y aranceles procesales (Art. 82)</small><br/><code>📌 MULTA_PAGADA_100_COACTIVA</code>"]:::pago
+    EC5(["✅ <b>Extinción y Archivo Definitivo del PAS</b><br/><small>Ejecutor Coactivo levanta gravámenes, cierra REC y archiva definitivamente</small><br/><code>📌 ARCHIVADO_EXTINCION_COACTIVA</code>"]):::termOk
+    
+    EC_FORZOSA["🚨 <b>Medidas Cautelares de Embargo Coactivo (Art. 82)</b><br/><small>Ejecutor traba retención de cuentas bancarias, secuestro conservativo e inscripciones registrales</small>"]:::alerta
+    EC_MEDIDAS_NOPEC["🔨 <b>Ejecución Forzosa de Medidas No Pecuniarias:</b><br/><small>• Clausura forzosa con soldadura y tapiado<br/>• Demolición coactiva con auxilio de la fuerza pública (PNP) y Gerencia de Desarrollo Urbano (Art. 73)<br/>• Obras con cuenta a cargo del infractor (Art. 75)</small><br/><code>📌 CONCLUIDO_EJECUCION_FORZOSA</code>"]:::termWarn
 end
 
 %% =========================================================================
-%% ENLACES Y CONEXIONES CON BADGES DE ALTA VISIBILIDAD (SIN CRUCES)
+%% ENLACES DEL FLUJO Y CONEXIONES ESTRUCTURALES
 %% =========================================================================
 
 INI --> ORIG
-ORIG -->|"<span class='edge-info'>📱 Denuncia ciudadana</span>"| OR2
 ORIG -->|"<span class='edge-info'>🚓 Patrullaje de campo</span>"| OR_PATRULLA
-OR2 --> OR3
-OR3 --> F1
+ORIG -->|"<span class='edge-info'>📱 Chiclayo Reporta</span>"| OR_APP
+ORIG -->|"<span class='edge-info'>🏛️ Mesa de partes</span>"| OR_MESA
+
+OR_APP --> F1
+OR_MESA --> F1
 OR_PATRULLA --> F1
+RRHH_NOT -.->|"<span class='edge-info'>Acredita formalmente</span>"| F1
 
-F1 --> D1_FISC
+F1 --> ADM_FACILIDADES
+ADM_FACILIDADES --> D1_FISC
+
 D1_FISC -->|"<span class='edge-yes'>✅ SÍ: Subsana in situ</span>"| E1
-D1_FISC -->|"<span class='edge-no'>❌ NO Subsana</span>"| D2_FISC
+D1_FISC -->|"<span class='edge-no'>❌ NO: Persiste falta</span>"| D2_FISC
 
-D2_FISC -->|"<span class='edge-yes'>✅ SÍ Identificado</span>"| F3
-D2_FISC -->|"<span class='edge-no'>❌ NO Identificado</span>"| F2
+D2_FISC -->|"<span class='edge-yes'>✅ SÍ: Identificado</span>"| F3
+D2_FISC -->|"<span class='edge-no'>❌ NO: No identificado</span>"| F2
+
 F2 --> D3_FISC
-D3_FISC -->|"<span class='edge-yes'>✅ Sí se identifica</span>"| F3
-D3_FISC -->|"<span class='edge-no'>❌ No se identifica</span>"| E2
+D3_FISC -->|"<span class='edge-yes'>✅ SÍ: Se identificó</span>"| F3
+D3_FISC -->|"<span class='edge-no'>❌ NO: Sin identificación</span>"| E2
 
 F3 -.-> F3_MEDIDAS
+F3_MEDIDAS -.-> INHIB_SATCH
+
 F3 --> D_PAGO1
-D_PAGO1 -->|"<span class='edge-yes'>✅ SÍ paga (60% dcto.)</span>"| T1_PRONTO
+D_PAGO1 -->|"<span class='edge-yes'>💰 PAGA 40% (DCTO. 60%)</span>"| T1_PRONTO
 D_PAGO1 -->|"<span class='edge-no'>❌ NO paga / Ejerce defensa</span>"| S1_SEC
 
-%% Enlace Fase 1 a Fase 2 (Vertical directo)
-S1_SEC ==>|"<span class='edge-info'>Vencido plazo de gracia (5 días)</span>"| L1_ASESOR1
+%% Fase 1 a Fase 2
+S1_SEC ==>|"<span class='edge-info'>Vencido plazo de gracia de 5 días hábiles</span>"| L1_DEP_ADM
 
-%% Enlaces Fase 2
-L1_ASESOR1 --> D4_EVAL1
-D4_EVAL1 -->|"<span class='edge-no'>❌ Sin mérito</span>"| E3
-D4_EVAL1 -->|"<span class='edge-yes'>✅ Con mérito</span>"| L2_INICIO
+L1_DEP_ADM --> D_PAGO2
+D_PAGO2 -->|"<span class='edge-yes'>💰 PAGA 60% (DCTO. 40%)</span>"| T2_PAGO_ANT
+D_PAGO2 -->|"<span class='edge-no'>❌ NO Paga</span>"| D5_EXIM
 
-L2_INICIO --> D_PAGO2
-D_PAGO2 -->|"<span class='edge-yes'>✅ SÍ paga (40% dcto.)</span>"| T2_PAGO_ANT
-D_PAGO2 -->|"<span class='edge-no'>❌ Continúa trámite</span>"| D5_EXIM
+D5_EXIM -->|"<span class='edge-yes'>✅ SÍ Acredita antes de inicio</span>"| EX_PLENO
+D5_EXIM -->|"<span class='edge-no'>❌ NO Regularizó antes</span>"| D4_EVAL1
 
-D5_EXIM -->|"<span class='edge-yes'>✅ Acredita regularización</span>"| EX2
-D5_EXIM -->|"<span class='edge-no'>❌ No regularizó</span>"| SG1_EMITE
+D4_EVAL1 -->|"<span class='edge-no'>❌ Sin mérito / Causal Art. 36</span>"| E3
+D4_EVAL1 -->|"<span class='edge-yes'>✅ Con indicios y mérito</span>"| L2_INFORME_LEGAL
 
-EX2 -->|"<span class='edge-info'>Antes de redactar inicio</span>"| EX3
-EX2 -->|"<span class='edge-info'>Tras ser notificado</span>"| EX4
-EX3 --> EX6
-EX4 --> EX5
-EX5 -->|"<span class='edge-yes'>✅ SÍ: Fecha anterior al inicio</span>"| EX6
-EX5 -->|"<span class='edge-no'>❌ NO: Fecha posterior</span>"| EX7
-EX7 -->|"<span class='edge-warn'>Canaliza como atenuante</span>"| L3_EVAL
+L2_INFORME_LEGAL --> SG1_EMITE
+SG1_EMITE -.->|"<span class='edge-warn'>Adopción de oficio</span>"| SG_CAUTELAR
+SG_CAUTELAR -.->|"<span class='edge-info'>Apela en 3 días</span>"| CAUT_APEL
 
-SG1_EMITE -->|"<span class='edge-info'>Plazo máx. 5 días hábiles</span>"| N1_NOTIF1
+SG1_EMITE -->|"<span class='edge-info'>Notificación en domicilio o casilla</span>"| N1_NOTIF1
 N1_NOTIF1 -.-> CAD_START
 CAD_START -.-> T2_CADUCIDAD
 
 N1_NOTIF1 --> D6_ADM1
-D6_ADM1 -->|"<span class='edge-yes'>✅ SÍ formula descargos</span>"| A1_DESC1
-D6_ADM1 -->|"<span class='edge-no'>❌ NO formula descargos</span>"| NT5_SILENCIO
-A1_DESC1 --> L3_EVAL
+D6_ADM1 -->|"<span class='edge-yes'>✅ SÍ Formula descargos (5d)</span>"| A1_DESC1
+D6_ADM1 -->|"<span class='edge-no'>❌ NO Descarga (Rebeldía)</span>"| NT5_SILENCIO
+
+A1_DESC1 --> D7_ATEN
 NT5_SILENCIO --> L3_EVAL
+
+D7_ATEN -->|"<span class='edge-yes'>💰 SÍ Reconoce o subsana</span>"| NT6_ATEN
+D7_ATEN -->|"<span class='edge-no'>❌ Niega / Defiende</span>"| L3_EVAL
+NT6_ATEN --> L3_EVAL
 
 L3_EVAL --> D_IFI_PROP
 D_IFI_PROP -->|"<span class='edge-yes'>✅ Propone Absolución</span>"| T2_ABSOL_IFI
-D_IFI_PROP -->|"<span class='edge-no'>⚖️ Propone Sanción</span>"| D7_ATEN
+D_IFI_PROP -->|"<span class='edge-no'>⚖️ Propone Sanción</span>"| SG2_IFI
+T2_ABSOL_IFI --> SG2_IFI
 
-D7_ATEN -->|"<span class='edge-yes'>✅ SÍ aplica atenuante (-30%)</span>"| NT6_ATEN
-D7_ATEN -->|"<span class='edge-no'>❌ Regular</span>"| D8_APOYO
-NT6_ATEN --> D8_APOYO
+%% Fase 2 a Fase 3
+SG2_IFI ==>|"<span class='edge-info'>Remisión de IFI y expediente foliado</span>"| G_TRASLADO
+G_TRASLADO --> N2_NOTIF2
+N2_NOTIF2 --> D1_DESC2
 
-D8_APOYO -->|"<span class='edge-no'>No requiere</span>"| L4_PROYECTA
-D8_APOYO -->|"<span class='edge-info'>Requiere peritaje</span>"| AP1
-AP1 --> D9_APOYO
-D9_APOYO -->|"<span class='edge-yes'>✅ Emite a tiempo</span>"| L4_PROYECTA
-D9_APOYO -->|"<span class='edge-no'>⚠️ Retraso prolongado</span>"| ALERT1
-ALERT1 -.-> L4_PROYECTA
+D1_DESC2 -->|"<span class='edge-yes'>✅ SÍ Formula alegatos (5d)</span>"| A1_DESC2
+D1_DESC2 -->|"<span class='edge-no'>❌ NO Formula alegatos</span>"| NT1_DESC2
 
-L4_PROYECTA --> SG2_IFI
-SG2_IFI --> N2_NOTIF2
+A1_DESC2 --> G_ACT_COMP
+NT1_DESC2 --> G_ACT_COMP
 
-%% Enlace Fase 2 a Fase 3
-N2_NOTIF2 ==>|"<span class='edge-info'>Traslado de IFI (Notificado)</span>"| D1_DESC2
-D1_DESC2 -->|"<span class='edge-yes'>✅ SÍ formula alegatos</span>"| A1_DESC2
-D1_DESC2 -->|"<span class='edge-no'>❌ NO formula alegatos</span>"| NT1_DESC2
-A1_DESC2 --> S1_MESA2
-NT1_DESC2 --> S1_MESA2
-S1_MESA2 --> L1_GESTOR
+G_ACT_COMP -->|"<span class='edge-info'>Expediente expedito</span>"| G_EVAL_FINAL
+G_EVAL_FINAL --> D_GER_DEC
 
-L1_GESTOR --> D_GER_DEC
-D_GER_DEC -->|"<span class='edge-yes'>✅ Absuelve cargos</span>"| T3_ABSOL_GER
-D_GER_DEC -->|"<span class='edge-no'>❌ Sanciona</span>"| G1_SANCION
+D_GER_DEC -->|"<span class='edge-yes'>✅ Resuelve Absolución</span>"| T3_ABSOL_GER
+D_GER_DEC -->|"<span class='edge-no'>🔨 Resuelve Sanción</span>"| G1_SANCION
 
 G1_SANCION --> N1_NOTIFG
 N1_NOTIFG --> D3_PAGOVOL
-D3_PAGOVOL -->|"<span class='edge-yes'>✅ SÍ paga con 20% dcto.</span>"| T1_PAGOVOL
-D3_PAGOVOL -->|"<span class='edge-no'>❌ NO se acoge al pago</span>"| D4_RECURSO
 
-D4_RECURSO -->|"<span class='edge-no'>❌ Vencen 15 días sin recurso</span>"| S2_FIRMEZA
-D4_RECURSO -->|"<span class='edge-yes'>✅ Interpone recurso</span>"| D5_INDIVREC
+D3_PAGOVOL -->|"<span class='edge-yes'>💰 PAGA 80% (DCTO. 20%)</span>"| T1_PAGOVOL
+D3_PAGOVOL -->|"<span class='edge-no'>❌ NO Paga voluntariamente</span>"| D4_RECURSO
 
-D5_INDIVREC -->|"<span class='edge-yes'>✅ Cumple requisitos</span>"| D7_TIPOREC
-D5_INDIVREC -->|"<span class='edge-no'>❌ Con defectos formales</span>"| REQ1_SUB
+D4_RECURSO -->|"<span class='edge-no'>❌ Sin recurso (15 días)</span>"| S2_FIRMEZA
+D4_RECURSO -->|"<span class='edge-yes'>⚖️ Interpone recurso</span>"| D5_INDIVREC
+
+D5_INDIVREC -->|"<span class='edge-no'>⚠️ Escrito ambiguo</span>"| REQ1_SUB
 REQ1_SUB --> D6_SUBSANA
-D6_SUBSANA -->|"<span class='edge-yes'>✅ SÍ subsana a tiempo</span>"| D7_TIPOREC
-D6_SUBSANA -->|"<span class='edge-no'>❌ NO subsana en 2 días</span>"| IMPROC
+D6_SUBSANA -->|"<span class='edge-no'>❌ NO Subsana (2 días)</span>"| IMPROC
+D6_SUBSANA -->|"<span class='edge-yes'>✅ SÍ Subsana en 2 días</span>"| D7_TIPOREC
+D5_INDIVREC -->|"<span class='edge-yes'>✅ Cumple requisitos formales</span>"| D7_TIPOREC
 
-D7_TIPOREC -->|"<span class='edge-info'>📄 Reconsideración</span>"| RECON1_RES
-D7_TIPOREC -->|"<span class='edge-info'>⚖️ Apelación</span>"| APEL1_ELEV
+D7_TIPOREC -->|"<span class='edge-info'>Reconsideración (Prueba nueva)</span>"| RECON1_RES
+D7_TIPOREC -->|"<span class='edge-info'>Apelación (Puro derecho)</span>"| APEL1_ELEV
 
 RECON1_RES --> D8_RECONCONF
-D8_RECONCONF -->|"<span class='edge-yes'>✅ Revoca o modifica</span>"| REVMOD1
-D8_RECONCONF -->|"<span class='edge-no'>❌ Confirma sanción</span>"| D8b_APELA
+D8_RECONCONF -->|"<span class='edge-yes'>✅ Revoca Sanción</span>"| REVMOD1
+D8_RECONCONF -->|"<span class='edge-no'>❌ Confirma Sanción</span>"| D8b_APELA
 
-D8b_APELA -->|"<span class='edge-yes'>✅ SÍ apela en 15 días</span>"| APEL1_ELEV
-D8b_APELA -->|"<span class='edge-no'>❌ NO apela (Consiente)</span>"| S_RECON_FIRME
+D8b_APELA -->|"<span class='edge-no'>❌ NO Apela en 15 días</span>"| S_RECON_FIRME
+D8b_APELA -->|"<span class='edge-yes'>⚖️ Apela en 15 días</span>"| APEL1_ELEV
 
-APEL1_ELEV --> J1_JURIDICA
-J1_JURIDICA --> M1_GM
+APEL1_ELEV --> M1_GM
 M1_GM --> D9_APELCONF
-D9_APELCONF -->|"<span class='edge-yes'>✅ Revoca sanción</span>"| REVMOD2
-D9_APELCONF -->|"<span class='edge-no'>❌ Confirma sanción</span>"| S3_FIRME
+D9_APELCONF -->|"<span class='edge-yes'>✅ Revoca Sanción</span>"| REVMOD2
+D9_APELCONF -->|"<span class='edge-no'>❌ Confirma Sanción</span>"| S3_FIRME
 
-%% Enlace Fase 3 a Fase 4: Coactiva
-S2_FIRMEZA ==>|"<span class='edge-no'>Título coactivo ordinario</span>"| EC1
-S_RECON_FIRME ==>|"<span class='edge-no'>Resolución consentida</span>"| EC1
-S3_FIRME ==>|"<span class='edge-no'>Fin de vía administrativa</span>"| EC1
-IMPROC ==>|"<span class='edge-no'>Sanción firme por improcedencia</span>"| EC1
+%% Títulos Ejecutivos hacia Fase 4
+S2_FIRMEZA ==>|"<span class='edge-no'>Título Firme Ordinario</span>"| EC1
+IMPROC ==>|"<span class='edge-no'>Título Firme por Inadmisibilidad</span>"| EC1
+S_RECON_FIRME ==>|"<span class='edge-no'>Título Firme en 1ra Instancia</span>"| EC1
+S3_FIRME ==>|"<span class='edge-no'>Título con Vía Agotada</span>"| EC1
 
-EC1 --> EC2
-EC2 --> EC3
-EC3 -->|"<span class='edge-yes'>✅ SÍ paga multa + costas</span>"| EC4
+EC1 --> D_ONEROSO
+D_ONEROSO -->|"<span class='edge-yes'>🗄️ Declarada Onerosa</span>"| T_ONEROSA
+D_ONEROSO -->|"<span class='edge-no'>⚡ Cobranza Viable</span>"| EC2
+
+EC2 --> D_COACT_PAGA
+D_COACT_PAGA -->|"<span class='edge-yes'>💰 PAGA 100% + COSTAS</span>"| EC4
 EC4 --> EC5
-EC3 -->|"<span class='edge-no'>❌ NO paga (Apercibimiento)</span>"| NT_EMBARGO
-NT_EMBARGO --> EC_FORZOSA
 
-%% =========================================================================
-%% ESTILOS VISUALES Y CLASES SEMÁNTICAS (DESIGN TOKENS)
-%% =========================================================================
+D_COACT_PAGA -->|"<span class='edge-no'>❌ Persiste Deudor</span>"| EC_FORZOSA
+EC_FORZOSA --> EC_MEDIDAS_NOPEC
+
+%% Clases y estilos de alto contraste
 classDef termStart fill:#0284c7,stroke:#0369a1,stroke-width:3px,color:#ffffff,font-weight:bold
+classDef destacado fill:#eff6ff,stroke:#2563eb,stroke-width:2.5px,color:#1e3a8a,font-weight:bold
 classDef termOk fill:#ecfdf5,stroke:#10b981,stroke-width:2.5px,color:#065f46,font-weight:bold
 classDef termWarn fill:#fef2f2,stroke:#ef4444,stroke-width:2.5px,color:#991b1b,font-weight:bold
-classDef proceso fill:#ffffff,stroke:#64748b,stroke-width:2px,color:#1e293b
-classDef destacado fill:#eff6ff,stroke:#2563eb,stroke-width:2.5px,color:#1e3a8a,font-weight:bold
 classDef decision fill:#eef2ff,stroke:#4f46e5,stroke-width:2.5px,color:#1e1b4b,font-weight:bold
+classDef proceso fill:#ffffff,stroke:#64748b,stroke-width:2px,color:#1e293b
 classDef alerta fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#9a3412
-classDef nota fill:#fefce8,stroke:#ca8a04,stroke-width:1.5px,stroke-dasharray:3 3,color:#713f12
+classDef nota fill:#f8fafc,stroke:#94a3b8,stroke-width:1.5px,stroke-dasharray:3 3,color:#334155
 classDef salto fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,stroke-dasharray:4 3,color:#581c87
+classDef admin fill:#fdf4ff,stroke:#c026d3,stroke-width:2px,color:#701a75,font-weight:bold
+classDef pago fill:#f0fdf4,stroke:#16a34a,stroke-width:2.5px,color:#14532d,font-weight:bold
 
-style FASE1 fill:#f0f9ff,stroke:#0284c7,stroke-width:2.5px
-style FASE2 fill:#f8fafc,stroke:#475569,stroke-width:2.5px
-style FASE3 fill:#faf5ff,stroke:#9333ea,stroke-width:2.5px
-style FASE4 fill:#fff1f2,stroke:#e11d48,stroke-width:2.5px
-style SUB_EXIMENTE fill:#ffffff,stroke:#10b981,stroke-width:1.5px,stroke-dasharray:3 3
-style SUB_APOYO fill:#ffffff,stroke:#ea580c,stroke-width:1.5px,stroke-dasharray:3 3
-style SUB_RECURSOS fill:#ffffff,stroke:#9333ea,stroke-width:1.5px,stroke-dasharray:3 3
+style FASE1 fill:#f0f9ff,stroke:#0284c7,stroke-width:2px
+style FASE2 fill:#f8fafc,stroke:#475569,stroke-width:2px
+style FASE3 fill:#faf5ff,stroke:#9333ea,stroke-width:2px
+style FASE4 fill:#fff1f2,stroke:#e11d48,stroke-width:2px

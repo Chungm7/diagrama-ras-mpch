@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Procedimientos Especiales y Control de Caducidad - Municipalidad Provincial de Chiclayo</title>
+  <title>Procedimientos Especiales y Control de Plazos - Municipalidad Provincial de Chiclayo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
@@ -103,7 +103,7 @@
   .node.decision .nodeLabel {
     color: #1e1b4b !important;
     font-weight: 800 !important;
-    font-size: 12.5px !important;
+    font-size: 12px !important;
     line-height: 1.35 !important;
   }
   
@@ -123,7 +123,7 @@
   }
   .cluster-label text, .cluster-label span {
     font-weight: 800 !important;
-    font-size: 13.5px !important;
+    font-size: 13px !important;
     letter-spacing: -0.01em !important;
   }
 
@@ -136,7 +136,6 @@
     filter: drop-shadow(0 4px 10px rgba(2, 132, 199, 0.35)) !important;
   }
 
-  /* EFECTO DE RESALTADO EN BÚSQUEDA Y SELECCIÓN */
   .node-highlighted rect, .node-highlighted polygon, .node-highlighted circle {
     stroke: #f59e0b !important;
     stroke-width: 4.5px !important;
@@ -182,7 +181,7 @@
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col h-screen overflow-hidden">
 
-  <!-- CABECERA PRINCIPAL CON NAVEGACIÓN ENTRE DIAGRAMAS -->
+  <!-- CABECERA PRINCIPAL CON NAVEGACIÓN -->
   <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xs z-20 shrink-0">
     <div class="flex items-center gap-3">
       <a href="index.html" class="flex items-center gap-2.5 text-slate-800 hover:text-sky-700 transition-colors group" title="Ir al Portal Maestro">
@@ -191,10 +190,10 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-sm font-extrabold text-slate-900 tracking-tight leading-none group-hover:text-sky-700">Procedimientos Especiales y Control de Caducidad</h1>
-            <span class="px-2 py-0.5 text-[10px] font-bold bg-sky-100 text-sky-800 rounded-full border border-sky-200">RAS • MPCH</span>
+            <h1 class="text-sm font-extrabold text-slate-900 tracking-tight leading-none group-hover:text-sky-700">Procedimientos Especiales y Control de Plazos</h1>
+            <span class="px-2 py-0.5 text-[10px] font-bold bg-sky-100 text-sky-800 rounded-full border border-sky-200">RAS 2026 • MPCH</span>
           </div>
-          <p class="text-[11px] text-slate-500 font-medium leading-none mt-1">Medidas Complementarias (Clausura, Retención, Decomiso, Paralización) • Arts. 60-72 RAS</p>
+          <p class="text-[11px] text-slate-500 font-medium leading-none mt-1">Medidas complementarias, procedimiento cautelar, caducidad y prescripción</p>
         </div>
       </a>
     </div>
@@ -220,10 +219,10 @@
       <button onclick="toggleLegendModal()" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-xs" title="Ver Leyenda de Colores">
         <i class="fa-solid fa-palette text-amber-600"></i> Leyenda
       </button>
-      <button onclick="exportSvg()" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-xs" title="Descargar en formato vectorial SVG">
+      <button onclick="exportSvg()" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-xs" title="Descargar SVG">
         <i class="fa-solid fa-download text-sky-600"></i> SVG
       </button>
-      <button onclick="exportPng()" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-xs" title="Descargar como imagen PNG de alta resolución">
+      <button onclick="exportPng()" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-xs" title="Descargar PNG">
         <i class="fa-solid fa-image text-emerald-600"></i> PNG
       </button>
       <button onclick="copyMermaidSource()" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-xs" title="Copiar código fuente Mermaid">
@@ -243,27 +242,27 @@
       </span>
       
         <button onclick="jumpToNode('SG_CAD')" class="px-2.5 py-1 text-xs font-semibold bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-sky-700 hover:border-sky-300 transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
-          <span>⏱️</span> <span>Control de Caducidad</span>
+          <span>⏱️</span> <span>Caducidad y Prescripción</span>
         </button>
         
         <button onclick="jumpToNode('P_CLAU')" class="px-2.5 py-1 text-xs font-semibold bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-sky-700 hover:border-sky-300 transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
-          <span>🔒</span> <span>1. Clausura Temporal</span>
+          <span>🔒</span> <span>Clausura (48h)</span>
         </button>
         
         <button onclick="jumpToNode('P_RET')" class="px-2.5 py-1 text-xs font-semibold bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-sky-700 hover:border-sky-300 transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
-          <span>📦</span> <span>2. Retención de Bienes</span>
+          <span>📦</span> <span>Retención y Donación</span>
         </button>
         
         <button onclick="jumpToNode('P_SAN')" class="px-2.5 py-1 text-xs font-semibold bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-sky-700 hover:border-sky-300 transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
-          <span>🥫</span> <span>3. Decomiso Sanitario</span>
+          <span>🥫</span> <span>Decomiso Sanitario (5d)</span>
         </button>
         
         <button onclick="jumpToNode('P_OBRA')" class="px-2.5 py-1 text-xs font-semibold bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-sky-700 hover:border-sky-300 transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
-          <span>🏗️</span> <span>4. Paralización de Obra</span>
+          <span>🏗️</span> <span>Paralización de Obra (15d)</span>
         </button>
         
-        <button onclick="jumpToNode('C_PRES')" class="px-2.5 py-1 text-xs font-semibold bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-sky-700 hover:border-sky-300 transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
-          <span>⚖️</span> <span>Prescripción (4 Años)</span>
+        <button onclick="jumpToNode('P_CAUTELAR')" class="px-2.5 py-1 text-xs font-semibold bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-sky-700 hover:border-sky-300 transition-all flex items-center gap-1 shadow-xs whitespace-nowrap">
+          <span>🛡️</span> <span>Medidas Cautelares (2d)</span>
         </button>
         
     </div>
@@ -271,7 +270,7 @@
     <div class="flex items-center gap-2 ml-auto shrink-0">
       <div class="relative flex items-center">
         <i class="fa-solid fa-magnifying-glass absolute left-2.5 text-slate-400 text-xs pointer-events-none"></i>
-        <input type="text" id="search-input" placeholder="Buscar nodo, artículo..." 
+        <input type="text" id="search-input" placeholder="Buscar nodo, cargo, pago..." 
                class="pl-7 pr-16 py-1 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent w-48 transition-all"
                oninput="handleSearch()" onkeydown="handleSearchKey(event)">
         <div class="absolute right-1.5 flex items-center gap-0.5">
@@ -318,13 +317,13 @@
     </div>
 
     <!-- PANEL LATERAL INSPECTOR DE NODOS (DRAWER) -->
-    <aside id="node-inspector" class="w-80 bg-white border-l border-slate-200 shadow-xl flex flex-col transition-all duration-300 translate-x-full absolute right-0 top-0 bottom-0 z-30">
+    <aside id="node-inspector" class="w-84 bg-white border-l border-slate-200 shadow-xl flex flex-col transition-all duration-300 translate-x-full absolute right-0 top-0 bottom-0 z-30">
       <div class="p-3.5 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <div class="w-6 h-6 rounded-md bg-sky-100 text-sky-700 flex items-center justify-center text-xs">
             <i class="fa-solid fa-info"></i>
           </div>
-          <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Ficha de Nodo / Actuación</h3>
+          <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Ficha de Actuación / Cargo</h3>
         </div>
         <button onclick="closeInspector()" class="text-slate-400 hover:text-slate-600 p-1">
           <i class="fa-solid fa-xmark text-sm"></i>
@@ -342,7 +341,7 @@
         </div>
 
         <div id="inspect-desc-box" class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Descripción y Detalle</div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Descripción y Detalle Funcional</div>
           <p id="inspect-desc" class="text-slate-600 leading-relaxed text-[11.5px]"></p>
         </div>
 
@@ -357,7 +356,7 @@
         </div>
 
         <div id="inspect-phase-box" class="p-3 bg-amber-50/50 border border-amber-200/60 rounded-xl space-y-1">
-          <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Fase / Módulo Pertinente</div>
+          <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Fase / Unidad Orgánica Competente</div>
           <p id="inspect-phase" class="text-slate-700 font-medium text-[11.5px]"></p>
         </div>
 
@@ -373,16 +372,14 @@
   <!-- PIE DE PÁGINA INFORMATIVO Y LEYENDA RÁPIDA -->
   <footer class="bg-white border-t border-slate-200 px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-500 z-10 shrink-0">
     <div class="flex items-center gap-4 flex-wrap">
-      <span class="flex items-center gap-1.5 font-medium"><i class="fa-solid fa-circle-check text-emerald-600"></i> Mapeo 100% Norma RAS</span>
-      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Conclusión Favorable</span>
+      <span class="flex items-center gap-1.5 font-medium"><i class="fa-solid fa-circle-check text-emerald-600"></i> Conforme al RAS Modificado 2026 MPCH</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Conclusión Favorable / Pago Con Dcto.</span>
       <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Archivo / Sanción Coactiva</span>
       <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block"></span> Decisión Jurídica</span>
-      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Alerta de Caducidad / Plazo</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-fuchsia-500 inline-block"></span> Acción del Administrado</span>
     </div>
     <div class="flex items-center gap-3 font-medium">
-      <span>💡 Haz clic en cualquier nodo para ver sus detalles normativos</span>
-      <span class="text-slate-300">|</span>
-      <span>Generado con estándar Archify</span>
+      <span>💡 Haz clic en cualquier nodo para ver detalles y cargos</span>
     </div>
   </footer>
 
@@ -400,27 +397,23 @@
       <div class="p-5 space-y-3 text-xs">
         <div class="flex items-center gap-3 p-2 rounded-lg bg-sky-50 border border-sky-200">
           <div class="w-6 h-6 rounded-md bg-sky-600 text-white flex items-center justify-center font-bold">🏁</div>
-          <div><div class="font-bold text-sky-900">Inicio del Procedimiento</div><div class="text-sky-700 text-[11px]">Punto de arranque del PAS (Detección in situ o Denuncia)</div></div>
+          <div><div class="font-bold text-sky-900">Inicio del Procedimiento</div><div class="text-sky-700 text-[11px]">Detección in situ, patrullaje o denuncia ciudadana</div></div>
         </div>
         <div class="flex items-center gap-3 p-2 rounded-lg bg-indigo-50 border border-indigo-200">
           <div class="w-6 h-6 rounded-md bg-indigo-600 text-white flex items-center justify-center font-bold">⚖️</div>
-          <div><div class="font-bold text-indigo-900">Decisión / Bifurcación Jurídica</div><div class="text-indigo-700 text-[11px]">Evaluación con plazos y alternativas procedimentales</div></div>
+          <div><div class="font-bold text-indigo-900">Decisión / Bifurcación Jurídica</div><div class="text-indigo-700 text-[11px]">Evaluación legal de descargos, indicios o recursos</div></div>
         </div>
-        <div class="flex items-center gap-3 p-2 rounded-lg bg-blue-50 border border-blue-200">
-          <div class="w-6 h-6 rounded-md bg-blue-600 text-white flex items-center justify-center font-bold">📄</div>
-          <div><div class="font-bold text-blue-900">Acto Administrativo Destacado</div><div class="text-blue-700 text-[11px]">Papeleta, Resolución de Inicio, IFI o Resolución de Sanción</div></div>
+        <div class="flex items-center gap-3 p-2 rounded-lg bg-fuchsia-50 border border-fuchsia-200">
+          <div class="w-6 h-6 rounded-md bg-fuchsia-600 text-white flex items-center justify-center font-bold">🧑💼</div>
+          <div><div class="font-bold text-fuchsia-900">Acción del Administrado</div><div class="text-fuchsia-700 text-[11px]">Descargos (5d), alegatos (5d), apelaciones o subsanación</div></div>
         </div>
         <div class="flex items-center gap-3 p-2 rounded-lg bg-emerald-50 border border-emerald-200">
-          <div class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center font-bold">✅</div>
-          <div><div class="font-bold text-emerald-900">Conclusión Favorable / Archivo</div><div class="text-emerald-700 text-[11px]">Pago pronto, subsanación, eximente, absolución o revocación</div></div>
+          <div class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center font-bold">💰</div>
+          <div><div class="font-bold text-emerald-900">Régimen de Pagos con Descuento</div><div class="text-emerald-700 text-[11px]">40% (60% dcto), 60% (40% dcto), 70% (atenuante), 80% (20% dcto)</div></div>
         </div>
         <div class="flex items-center gap-3 p-2 rounded-lg bg-rose-50 border border-rose-200">
           <div class="w-6 h-6 rounded-md bg-rose-600 text-white flex items-center justify-center font-bold">🛑</div>
-          <div><div class="font-bold text-rose-900">Conclusión Sancionadora / Coactiva</div><div class="text-rose-700 text-[11px]">Archivo preliminar, caducidad o embargo coactivo forzoso</div></div>
-        </div>
-        <div class="flex items-center gap-3 p-2 rounded-lg bg-amber-50 border border-amber-200">
-          <div class="w-6 h-6 rounded-md bg-amber-600 text-white flex items-center justify-center font-bold">⚠️</div>
-          <div><div class="font-bold text-amber-900">Alerta Crítica / Caducidad / Firmeza</div><div class="text-amber-700 text-[11px]">Puntos ciegos de demora pericial o consentimiento de plazos</div></div>
+          <div><div class="font-bold text-rose-900">Conclusión Sancionadora / Coactiva</div><div class="text-rose-700 text-[11px]">Resolución de sanción, REC, embargos o demolición</div></div>
         </div>
       </div>
       <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex justify-end">
@@ -432,76 +425,93 @@
   <script type="text/plain" id="raw-mermaid">
 flowchart TD
 %% =========================================================================
-%% PROCEDIMIENTOS ESPECIALES Y CONTROL DE CADUCIDAD (PAS - MUNICIPALIDAD DE CHICLAYO)
-%% BASE LEGAL: ARTS. 60, 62, 63, 65, 66, 67, 70, 72 RAS / LEY N° 27444
+%% PROCEDIMIENTOS ESPECIALES, MEDIDAS COMPLEMENTARIAS Y CONTROL DE PLAZOS
+%% BASE LEGAL: ARTS. 60, 61, 62, 63, 65, 66, 67, 70, 72, 76-79 RAS 2026
 %% =========================================================================
 
-subgraph SG_CAD ["⏱️ CONTROL ESTRICTO DE CADUCIDAD Y PRESCRIPCIÓN (ARTS. 60, 62, 63 RAS / LEY 27444)"]
+subgraph SG_CAD ["⏱️ CONTROL ESTRICTO DE CADUCIDAD Y PRESCRIPCIÓN (ARTS. 60-63 RAS)"]
     direction TB
-    C_INI(["⏱️ <b>Notificación Formal de Imputación de Cargos</b><br/><small>Disparo del plazo de caducidad</small>"]):::termStart
+    C_INI(["⏱️ <b>Notificación Formal del Inicio del PAS</b><br/><small>Disparo oficial del cómputo de caducidad (Art. 62)</small>"]):::termStart
     
-    C_9M{"¿Resolución final notificada<br/>dentro de los 9 meses?<br/><small>(Art. 62 RAS)</small>"}:::decision
-    C_OK(["✅ <b>Trámite Oportuno (Sin Caducidad)</b><br/><small>PAS válido y eficaz</small><br/><code>📌 PAS_EN_PLAZO</code>"]):::termOk
+    C_9M{"¿Resolución final notificada<br/>dentro de los 9 meses?<br/><small>(Art. 62 RAS / Ley 27444)</small>"}:::decision
+    C_OK(["✅ <b>Trámite Oportuno (Sin Caducidad)</b><br/><small>Procedimiento eficaz y válido dentro de plazo legal</small><br/><code>📌 PAS_EN_PLAZO</code>"]):::termOk
     
-    C_AMP{"¿Ampliación motivada de 3 meses<br/>dictada ANTES del vencimiento?"}:::decision
-    C_12M{"¿Notificada dentro de<br/>los 12 meses ampliados?"}:::decision
+    C_AMP{"¿Subgerente emitió prórroga<br/>motivada de 3 meses ANTES<br/>del vencimiento de los 9 meses?"}:::decision
+    C_12M{"¿Resolución final notificada<br/>dentro de los 12 meses?"}:::decision
     
-    C_CAD(["🗄️ <b>DECLARACIÓN DE CADUCIDAD DEL PAS</b><br/><small>Archivo del expediente por exceso de plazo</small><br/><code>📌 ARCHIVADO_POR_CADUCIDAD</code>"]):::termWarn
+    C_CAD(["🗄️ <b>DECLARACIÓN AUTOMÁTICA DE CADUCIDAD</b><br/><small>Art. 62: Archivo automático de oficio o a pedido de parte por exceso de plazo</small><br/><code>📌 ARCHIVADO_POR_CADUCIDAD</code>"]):::termWarn
     
-    ALERT_CAD["⚠️ <b>PUNTO CIEGO DE AUDITORÍA</b><br/><small>Demoras en informes periciales o firma causan caducidad recurrente.<br/>Genera responsabilidad funcional disciplinaria</small>"]:::alerta
+    ALERT_CAD["⚠️ <b>PUNTO CIEGO DE AUDITORÍA Y RESPONSABILIDAD:</b><br/><small>Demoras en informes técnicos de apoyo o firmas generan caducidad recurrente y falta disciplinaria</small>"]:::alerta
     
-    C_MEDPROV["🛡️ <b>Vigencia Provisional de Medidas (Art. 62)</b><br/><small>Medidas complementarias siguen por 3 meses (excepto clausura)<br/>mientras se evalúa reinicio de nuevo PAS</small>"]:::proceso
+    C_MEDPROV["🛡️ <b>Efecto de la Caducidad sobre Medidas (Art. 63)</b><br/><small>Medidas complementarias siguen vigentes 3 meses (excepto clausura temporal que dura hasta subsanar Ley 31914)</small>"]:::proceso
     
-    C_PRES{"¿Infracción ya prescribió?<br/><small>(Plazo: 4 años desde la papeleta)</small>"}:::decision
+    C_PRES{"¿La infracción administrativa<br/>ya prescribió?<br/><small>(Plazo: 4 años desde papeleta / cesación Art. 60)</small>"}:::decision
     
-    C_FIN(["🗄️ <b>ARCHIVO DEFINITIVO POR PRESCRIPCIÓN</b><br/><small>Extinción total de potestad sancionadora</small><br/><code>📌 PRESCRIPCION_TOTAL</code>"]):::termWarn
-    C_REINICIO(["🔁 <b>Iniciar Nuevo PAS desde Fase 1</b><br/><small>Subgerencia evalúa nueva imputación</small><br/><code>📌 REINICIO_PAS</code>"]):::salto
+    C_FIN(["🗄️ <b>ARCHIVO DEFINITIVO POR PRESCRIPCIÓN</b><br/><small>Extinción definitiva de la potestad sancionadora de la MPCH</small><br/><code>📌 PRESCRIPCION_TOTAL</code>"]):::termWarn
+    C_REINICIO(["🔁 <b>Evaluación de Nuevo PAS desde Fase 1</b><br/><small>Subgerencia evalúa abrir nuevo PAS conservando pruebas no reproducibles (Art. 63)</small><br/><code>📌 REINICIO_PAS</code>"]):::salto
 end
 
-subgraph SG_ESP ["🛡️ CUATRO PROCEDIMIENTOS ESPECIALES DE MEDIDAS COMPLEMENTARIAS (RAS)"]
+subgraph SG_ESP ["🛡️ CINCO PROCEDIMIENTOS ESPECIALES DE MEDIDAS COMPLEMENTARIAS (RAS 2026)"]
     direction TB
     
-    %% Clausura
-    subgraph P_CLAU ["🔒 1. Clausura Temporal (Art. 65 RAS)"]
-        CL1["🧑💼 <b>Administrado subsana causa</b><br/><small>Solicita reapertura formal ante Mesa de Partes</small>"]:::proceso
-        CL2{"¿Municipalidad formula<br/>objeción en 48 horas?"}:::decision
-        CL_NO(["✅ <b>Levantamiento Automático</b><br/><small>Silencio positivo habilitante</small><br/><code>📌 CLAUSURA_LEVANTADA</code>"]):::termOk
-        CL_SI["⚠️ <b>Clausura Permanece Vigente</b><br/><small>Resolución denegatoria motivada</small>"]:::termWarn
+    %% 1. Clausura
+    subgraph P_CLAU ["🔒 1. Clausura Temporal y Levantamiento Inmediato (Art. 65.a RAS / Ley N° 31914)"]
+        CL_IMP["⚡ <b>Suscripción de Acta de Clausura Temporal</b><br/><small>Subgerente de Fiscalización la impone al finalizar inspección in situ</small>"]:::destacado
+        CL1["🧑💼 <b>Administrado subsana causas</b><br/><small>Presenta solicitud formal de levantamiento ante Mesa de Partes</small>"]:::admin
+        CL_EVAL["🔍 <b>Subgerencia de Fiscalización evalúa</b><br/><small>Plazo legal perentorio: 48 horas hábiles (con inspectores técnicos si aplica)</small>"]:::proceso
+        CL2{"¿Municipalidad formula objeción<br/>motivada dentro de las 48 horas?"}:::decision
+        CL_NO(["✅ <b>Levantamiento Automático de Clausura</b><br/><small>Silencio positivo: clausura queda sin efecto de pleno derecho</small><br/><code>📌 CLAUSURA_LEVANTADA_AUTOMATICA</code>"]):::termOk
+        CL_SI["⚠️ <b>Clausura Permanece Vigente</b><br/><small>Subgerente emite resolución denegatoria motivada por falta de subsanación</small>"]:::termWarn
     end
     
-    %% Retención
-    subgraph P_RET ["📦 2. Retención de Bienes (Arts. 66 y 72 RAS)"]
-        RT1["📦 <b>Custodia en Depósito Municipal</b><br/><small>• Perecibles: 1 día calendario<br/>• No perecibles: 30 días calendario</small>"]:::proceso
-        RT2{"¿Solicita devolución con pago<br/>de multa dentro del plazo?"}:::decision
-        RT_SI["✅ <b>Devolución del Bien Retenido</b><br/><small>Entrega mediante Acta de Devolución</small>"]:::termOk
-        RT_NO(["🗄️ <b>Declaración de Abandono</b><br/><small>Disposición final: donación a beneficencia</small><br/><code>📌 ABANDONO_DECLARADO</code>"]):::termWarn
+    %% 2. Retención
+    subgraph P_RET ["📦 2. Retención de Bienes y Abandono (Arts. 66 y 72 RAS)"]
+        RT_IMP["👮 <b>Policía Municipal (Subgerencia Seg. Ciudadana)</b><br/><small>Retiene mercadería o bienes en vía pública y traslada al depósito</small>"]:::destacado
+        RT1["📦 <b>Plazos de Custodia en Depósito Municipal:</b><br/><small>• Bienes Perecibles: 1 día calendario<br/>• Bienes No Perecibles: 30 días calendario</small>"]:::proceso
+        RT2{"🧑💼 <b>ADMINISTRADO:</b><br/>¿Paga papeleta y solicita retiro<br/>dentro del plazo de custodia?"}:::decision
+        RT_SI["✅ <b>Devolución de Bienes al Administrado</b><br/><small>Entrega en depósito mediante Acta de Devolución tras pago</small>"]:::termOk
+        RT_NO["🗄️ <b>Subgerente de Fiscalización Declara Abandono</b><br/><small>Emite informe de abandono a Gerencia de Seguridad Ciudadana</small>"]:::proceso
+        RT_DONA(["🎁 <b>Disposición Final (Donación)</b><br/><small>Gerente de Seg. Ciudadana ordena donación a entidades religiosas o benéficas (Art. 72)</small><br/><code>📌 ABANDONO_Y_DONACION</code>"]):::termWarn
     end
     
-    %% Sanidad
-    subgraph P_SAN ["🥫 3. Decomiso Sanitario (Art. 67 RAS)"]
-        SN1["🔬 <b>Análisis Bromatológico Pericial</b><br/><small>Subgerencia de Sanidad ejecuta en máx. 5 días</small>"]:::proceso
+    %% 3. Decomiso Sanitario
+    subgraph P_SAN ["🥫 3. Decomiso Sanitario y Destrucción (Art. 67 RAS)"]
+        SN_IMP["🔬 <b>Subgerencia de Sanidad y Vigilancia Sanitaria</b><br/><small>Inspectores sanitarios/médicos veterinarios intervienen in situ</small>"]:::destacado
+        SN1{"¿Alimentos manifiestamente adulterados,<br/>descompuestos o con peligro a la vida?"}:::decision
+        SN_INMED(["🚨 <b>Decomiso Inmediato y Destrucción</b><br/><small>Incineración o eliminación en relleno sanitario</small><br/><code>📌 DECOMISO_DESTRUCCION_DIRECTA</code>"]):::termWarn
+        SN_DUDA["🧪 <b>Análisis Bromatológico u Organoléptico</b><br/><small>Sanidad analiza en máx. 5 días hábiles dejando contramuestra lacrada</small>"]:::proceso
         SN2{"¿Producto es calificado<br/>apto para consumo humano?"}:::decision
-        SN_APTO["✅ <b>Devolución Inmediata</b><br/><small>Entrega de producto apto al administrado</small>"]:::termOk
-        SN_NOAPTO(["🚨 <b>Decomiso y Destrucción Final</b><br/><small>Incineración o disposición en relleno sanitario</small><br/><code>📌 DECOMISO_DESTRUIDO</code>"]):::termWarn
+        SN_APTO["✅ <b>Devolución de Muestra y Bienes</b><br/><small>Entrega de producto apto al administrado</small>"]:::termOk
+        SN_NOAPTO(["🚨 <b>Destrucción Sanitaria Definitiva</b><br/><small>Eliminación formal por constituir riesgo contra la salud</small><br/><code>📌 DECOMISO_DESTRUIDO_LAB</code>"]):::termWarn
     end
     
-    %% Obras
-    subgraph P_OBRA ["🏗️ 4. Paralización de Obra (Art. 70 RAS)"]
-        OB1["🏗️ <b>Administrado solicita levantamiento</b><br/><small>Plazo de subsanación: 30 días hábiles (única vez)</small>"]:::proceso
-        OB2["🔍 <b>Subsanación de observaciones (15 d)</b><br/><small>Reinspección in situ por inspectores de obras</small>"]:::proceso
-        OB3{"¿Inspectores formulan<br/>objeción motivada in situ?"}:::decision
-        OB_OK(["✅ <b>Observaciones Levantadas</b><br/><small>Silencio positivo: reinicio de trabajos</small><br/><code>📌 OBRA_REANUDADA</code>"]):::termOk
-        OB_NO["⚠️ <b>Continúa Obra Paralizada</b><br/><small>Reiteración de medidas coercitivas</small>"]:::termWarn
+    %% 4. Paralización de Obra
+    subgraph P_OBRA ["🏗️ 4. Paralización y Reanudación de Obras (Art. 70 RAS / Ley 32035)"]
+        OB_IMP["🛑 <b>Fiscalizador suscribe Acta de Paralización</b><br/><small>Medida correctiva inmediata ante construcción sin licencia o fuera de norma</small>"]:::destacado
+        OB1["🏗️ <b>Administrado solicita levantamiento</b><br/><small>Plazo de subsanación: 30 días hábiles a su solicitud (única vez)</small>"]:::admin
+        OB2["🔍 <b>Reinspección Conjunta (Plazo 15 días)</b><br/><small>Subgerencia de Fiscalización e Inspectores de Control Urbano verifican in situ</small>"]:::proceso
+        OB3{"¿Autoridad formula objeción<br/>motivada dentro de los 15 días?"}:::decision
+        OB_OK(["✅ <b>Observaciones Levantadas Automáticamente</b><br/><small>Silencio positivo: fiscalizador suscribe Acta de Verificación y reanuda obra</small><br/><code>📌 OBRA_REANUDADA</code>"]):::termOk
+        OB_NO["⚠️ <b>Persiste Obra Paralizada</b><br/><small>Se deriva al Ejecutor Coactivo para ejecución forzada según Ley 26979</small>"]:::termWarn
+    end
+
+    %% 5. Medidas Cautelares y Apelación
+    subgraph P_CAUTELAR ["🛡️ 5. Procedimiento Cautelar y Apelación en 2 Días (Arts. 76-79 RAS)"]
+        CAUT_DICT["🖋️ <b>Subgerente de Fiscalización dicta Medida Cautelar</b><br/><small>De oficio, al inicio o durante el PAS (previo informe legal del Dpto. Administrativo)</small>"]:::destacado
+        CAUT_REC{"🧑💼 <b>ADMINISTRADO: ¿Interpone Apelación?</b><br/><small>Plazo perentorio: 3 días calendario tras notificación (Art. 79)</small>"}:::decision
+        CAUT_NOAPEL["⚡ <b>Medida Cautelar se Ejecuta sin Suspensión</b><br/><small>Subgerencia hace seguimiento a la eficacia de la medida</small>"]:::proceso
+        CAUT_RES["🏛️ <b>Gerente de Seguridad Ciudadana Resuelve</b><br/><small>Plazo perentorio: 2 días calendario (no suspende la ejecución cautelar)</small>"]:::destacado
+        CAUT_CONF(["✅ <b>Pronunciamiento Cautelar Firme</b><br/><small>Confirma o modifica medida para asegurar resolución final de sanción</small><br/><code>📌 MEDIDA_CAUTELAR_RESUELTA</code>"]):::termOk
     end
 end
 
-%% Conexiones Caducidad
+%% Conexiones Caducidad y Prescripción
 C_INI --> C_9M
 C_9M -->|"<span class='edge-yes'>✅ SÍ: En plazo (<= 9 meses)</span>"| C_OK
 C_9M -->|"<span class='edge-no'>❌ NO: Excede 9 meses</span>"| C_AMP
 
-C_AMP -->|"<span class='edge-yes'>✅ SÍ: Ampliación dictada a tiempo</span>"| C_12M
-C_AMP -->|"<span class='edge-no'>❌ NO: Sin ampliación formal</span>"| C_CAD
+C_AMP -->|"<span class='edge-yes'>✅ SÍ: Prórroga formal emitida</span>"| C_12M
+C_AMP -->|"<span class='edge-no'>❌ NO: Sin prórroga previa</span>"| C_CAD
 
 C_12M -->|"<span class='edge-yes'>✅ SÍ: En plazo (<= 12 meses)</span>"| C_OK
 C_12M -->|"<span class='edge-no'>❌ NO: Excede 12 meses</span>"| C_CAD
@@ -510,27 +520,42 @@ C_CAD -.-> ALERT_CAD
 C_CAD --> C_MEDPROV
 C_MEDPROV --> C_PRES
 C_PRES -->|"<span class='edge-no'>❌ Infracción Prescrita (> 4 años)</span>"| C_FIN
-C_PRES -->|"<span class='edge-yes'>✅ Acción vigente (<= 4 años)</span>"| C_REINICIO
+C_PRES -->|"<span class='edge-yes'>✅ Infracción Vigente (<= 4 años)</span>"| C_REINICIO
 
 %% Conexiones Clausura
-CL1 --> CL2
+CL_IMP --> CL1
+CL1 --> CL_EVAL
+CL_EVAL --> CL2
 CL2 -->|"<span class='edge-yes'>✅ NO Objeta (Silencio 48h)</span>"| CL_NO
 CL2 -->|"<span class='edge-no'>❌ SÍ Objeta motivadamente</span>"| CL_SI
 
 %% Conexiones Retención
+RT_IMP --> RT1
 RT1 --> RT2
-RT2 -->|"<span class='edge-yes'>✅ SÍ: Paga y reclama a tiempo</span>"| RT_SI
+RT2 -->|"<span class='edge-yes'>✅ SÍ: Paga y solicita a tiempo</span>"| RT_SI
 RT2 -->|"<span class='edge-no'>❌ NO: Vence plazo de custodia</span>"| RT_NO
+RT_NO --> RT_DONA
 
 %% Conexiones Sanidad
-SN1 --> SN2
+SN_IMP --> SN1
+SN1 -->|"<span class='edge-no'>Inocuidad flagrante</span>"| SN_INMED
+SN1 -->|"<span class='edge-info'>Requiere análisis</span>"| SN_DUDA
+SN_DUDA --> SN2
 SN2 -->|"<span class='edge-yes'>✅ Apto para consumo</span>"| SN_APTO
 SN2 -->|"<span class='edge-no'>❌ No apto (Riesgo sanitario)</span>"| SN_NOAPTO
 
 %% Conexiones Obra
-OB1 --> OB2 --> OB3
-OB3 -->|"<span class='edge-yes'>✅ Conforme (Sin objeción)</span>"| OB_OK
+OB_IMP --> OB1
+OB1 --> OB2
+OB2 --> OB3
+OB3 -->|"<span class='edge-yes'>✅ Conforme (Sin objeción 15d)</span>"| OB_OK
 OB3 -->|"<span class='edge-no'>❌ Objeción técnica fundada</span>"| OB_NO
+
+%% Conexiones Cautelares
+CAUT_DICT --> CAUT_REC
+CAUT_REC -->|"<span class='edge-no'>❌ NO Apela en 3 días</span>"| CAUT_NOAPEL
+CAUT_REC -->|"<span class='edge-yes'>⚖️ SÍ Apela en 3 días</span>"| CAUT_RES
+CAUT_RES --> CAUT_CONF
 
 %% Clases y estilos
 classDef termStart fill:#0284c7,stroke:#0369a1,stroke-width:3px,color:#ffffff,font-weight:bold
@@ -540,6 +565,8 @@ classDef proceso fill:#ffffff,stroke:#64748b,stroke-width:2px,color:#1e293b
 classDef decision fill:#eef2ff,stroke:#4f46e5,stroke-width:2.5px,color:#1e1b4b,font-weight:bold
 classDef alerta fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#9a3412
 classDef salto fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,stroke-dasharray:4 3,color:#581c87
+classDef destacado fill:#eff6ff,stroke:#2563eb,stroke-width:2.5px,color:#1e3a8a,font-weight:bold
+classDef admin fill:#fdf4ff,stroke:#c026d3,stroke-width:2px,color:#701a75,font-weight:bold
 
 style SG_CAD fill:#f8fafc,stroke:#475569,stroke-width:2.5px
 style SG_ESP fill:#faf5ff,stroke:#9333ea,stroke-width:2.5px
@@ -547,6 +574,7 @@ style P_CLAU fill:#ffffff,stroke:#0284c7,stroke-width:1.5px
 style P_RET fill:#ffffff,stroke:#10b981,stroke-width:1.5px
 style P_SAN fill:#ffffff,stroke:#ea580c,stroke-width:1.5px
 style P_OBRA fill:#ffffff,stroke:#8b5cf6,stroke-width:1.5px
+style P_CAUTELAR fill:#ffffff,stroke:#0d9488,stroke-width:1.5px
   </script>
 
   <script>
@@ -739,7 +767,7 @@ style P_OBRA fill:#ffffff,stroke:#8b5cf6,stroke-width:1.5px
       if (smallEl) {
         desc.innerHTML = smallEl.innerHTML;
       } else {
-        desc.innerText = fullText.replace(/📌.*/, '').replace(title.innerText, '').trim() || 'Actuación dentro del procedimiento administrativo según ordenanza.';
+        desc.innerText = fullText.replace(/📌.*/, '').replace(title.innerText, '').trim() || 'Actuación dentro del procedimiento administrativo según RAS 2026.';
       }
 
       let clusterEl = nodeEl.closest('.cluster');
@@ -747,12 +775,18 @@ style P_OBRA fill:#ffffff,stroke:#8b5cf6,stroke-width:1.5px
         const clusterLabel = clusterEl.querySelector('.cluster-label') || clusterEl.querySelector('text');
         phase.innerText = clusterLabel ? clusterLabel.textContent.trim() : 'Fase General del Procedimiento';
       } else {
-        phase.innerText = 'Flujo de Fiscalización y Sanción (PAS)';
+        phase.innerText = 'Flujo del Procedimiento Administrativo Sancionador (PAS)';
       }
 
       if (nodeEl.classList.contains('termOk')) {
         badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300';
         badge.innerText = 'Conclusión Favorable / Archivo';
+      } else if (nodeEl.classList.contains('pago')) {
+        badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-800 border border-green-300';
+        badge.innerText = 'Régimen de Pago Extintivo';
+      } else if (nodeEl.classList.contains('admin')) {
+        badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-fuchsia-100 text-fuchsia-800 border border-fuchsia-300';
+        badge.innerText = 'Acción del Administrado';
       } else if (nodeEl.classList.contains('termWarn')) {
         badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300';
         badge.innerText = 'Archivo / Conclusión Sancionadora';
@@ -859,10 +893,10 @@ style P_OBRA fill:#ffffff,stroke:#8b5cf6,stroke-width:1.5px
       focusSearchMatch(currentMatchIndex);
     }
 
-    function focusSearchMatch(idx) {
-      if (idx < 0 || idx >= searchMatches.length || !panZoomInstance) return;
-      const targetNode = searchMatches[idx];
-      const bbox = targetNode.getBBox();
+    function focusSearchMatch(index) {
+      if (index < 0 || index >= searchMatches.length || !panZoomInstance) return;
+      const target = searchMatches[index];
+      const bbox = target.getBBox();
       const container = document.getElementById('container');
       const zoom = Math.max(1.0, panZoomInstance.getZoom());
       panZoomInstance.zoom(zoom);
@@ -870,71 +904,21 @@ style P_OBRA fill:#ffffff,stroke:#8b5cf6,stroke-width:1.5px
         x: (container.clientWidth / 2) - (bbox.x + bbox.width / 2) * zoom,
         y: (container.clientHeight / 2) - (bbox.y + bbox.height / 2) * zoom
       });
-      inspectNode(targetNode);
+      inspectNode(target);
     }
 
-    function exportSvg() {
-      const svgEl = document.querySelector('#mermaid-target svg');
-      if (!svgEl) return;
-      const clone = svgEl.cloneNode(true);
-      clone.removeAttribute('style');
-      const svgData = new XMLSerializer().serializeToString(clone);
-      const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `PAS_Chiclayo_especiales_${Date.now()}.svg`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
-    function exportPng() {
-      const svgEl = document.querySelector('#mermaid-target svg');
-      if (!svgEl) return;
-      const clone = svgEl.cloneNode(true);
-      clone.removeAttribute('style');
-      const svgData = new XMLSerializer().serializeToString(clone);
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(svgBlob);
-      
-      img.onload = function() {
-        const scale = 2;
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        URL.revokeObjectURL(url);
-        
-        const a = document.createElement('a');
-        a.download = `PAS_Chiclayo_especiales_${Date.now()}.png`;
-        a.href = canvas.toDataURL('image/png');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      };
-      img.src = url;
-    }
-
-    function copyMermaidSource() {
-      const rawCode = document.getElementById('raw-mermaid').innerText.trim();
-      navigator.clipboard.writeText(rawCode).then(() => {
-        alert('¡Código Mermaid (especiales) copiado con éxito al portapapeles!');
-      }).catch(err => {
-        console.error('Error al copiar:', err);
-      });
-    }
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else if (document.exitFullscreen) {
-        document.exitFullscreen();
+    function toggleWheelMode() {
+      if (!panZoomInstance) return;
+      const btn = document.getElementById('wheel-mode-btn');
+      const isZoomEnabled = panZoomInstance.isMouseWheelZoomEnabled();
+      if (isZoomEnabled) {
+        panZoomInstance.disableMouseWheelZoom();
+        btn.innerHTML = '<i class="fa-solid fa-hand text-sky-600"></i> <span class="hidden sm:inline">2 Dedos: Desplazar</span>';
+        btn.title = "Modo táctil/trackpad: Desplazamiento activado";
+      } else {
+        panZoomInstance.enableMouseWheelZoom();
+        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-plus text-amber-600"></i> <span class="hidden sm:inline">Rueda: Zoom</span>';
+        btn.title = "Modo ratón: Zoom con rueda activado";
       }
     }
 
@@ -943,86 +927,69 @@ style P_OBRA fill:#ffffff,stroke:#8b5cf6,stroke-width:1.5px
       modal.classList.toggle('hidden');
     }
 
-    let wheelMode = localStorage.getItem('pas_wheel_mode') || 'pan';
-
-    function toggleWheelMode() {
-      wheelMode = (wheelMode === 'pan') ? 'zoom' : 'pan';
-      localStorage.setItem('pas_wheel_mode', wheelMode);
-      updateWheelModeUI();
+    function copyMermaidSource() {
+      const rawCode = document.getElementById('raw-mermaid').innerText.trim();
+      navigator.clipboard.writeText(rawCode).then(() => {
+        alert('Código fuente Mermaid copiado al portapapeles.');
+      });
     }
 
-    function updateWheelModeUI() {
-      const btn = document.getElementById('wheel-mode-btn');
-      if (!btn) return;
-      if (wheelMode === 'pan') {
-        btn.innerHTML = '<i class="fa-solid fa-hand text-sky-600"></i> <span class="hidden sm:inline">2 Dedos: Desplazar</span>';
-        btn.className = 'px-2.5 py-1 text-xs font-medium bg-sky-50 text-sky-800 border border-sky-300 rounded-lg hover:bg-sky-100 transition-all flex items-center gap-1.5 shadow-xs';
-        btn.title = 'Modo actual: 2 dedos desplazan el plano en panel táctil. Clic para cambiar a Rueda = Zoom.';
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => alert('No se pudo activar pantalla completa'));
       } else {
-        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-plus text-amber-600"></i> <span class="hidden sm:inline">Rueda: Zoom</span>';
-        btn.className = 'px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-900 border border-amber-300 rounded-lg hover:bg-amber-100 transition-all flex items-center gap-1.5 shadow-xs';
-        btn.title = 'Modo actual: La rueda del ratón hace zoom directo. Clic para cambiar a 2 dedos desplazan.';
+        document.exitFullscreen();
       }
     }
 
-    function zoomAtScreenPoint(scaleMultiplier, clientX, clientY) {
-      if (!panZoomInstance) return;
-      const svgElement = document.querySelector('#mermaid-target svg');
-      if (!svgElement) return;
-
-      try {
-        const ctm = svgElement.getScreenCTM();
-        if (ctm) {
-          const p = svgElement.createSVGPoint();
-          p.x = clientX;
-          p.y = clientY;
-          const svgPoint = p.matrixTransform(ctm.inverse());
-          panZoomInstance.zoomAtPointBy(scaleMultiplier, svgPoint);
-          return;
-        }
-      } catch (err) {}
-      panZoomInstance.zoomBy(scaleMultiplier);
+    function exportSvg() {
+      const svg = document.querySelector('#mermaid-target svg');
+      if (!svg) return;
+      const serializer = new XMLSerializer();
+      const svgBlob = new Blob([serializer.serializeToString(svg)], {type: 'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(svgBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'diagrama_especiales.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
-    function initGestures() {
-      const container = document.getElementById('container');
-      if (!container) return;
-
-      container.addEventListener('wheel', function(e) {
-        if (!panZoomInstance) return;
-        e.preventDefault();
-
-        if (e.ctrlKey) {
-          let delta = -e.deltaY;
-          if (e.deltaMode === 1) delta *= 20;
-          const step = Math.max(-80, Math.min(80, delta));
-          const zoomFactor = Math.exp(step * 0.0035);
-          zoomAtScreenPoint(zoomFactor, e.clientX, e.clientY);
-          return;
-        }
-
-        const multiplier = (e.deltaMode === 1) ? 20 : (e.deltaMode === 2 ? 500 : 1);
-        const hasHorizontal = Math.abs(e.deltaX) > 0;
-
-        if (hasHorizontal || wheelMode === 'pan') {
-          panZoomInstance.panBy({
-            x: -e.deltaX * multiplier,
-            y: -e.deltaY * multiplier
-          });
-        } else {
-          let delta = -e.deltaY;
-          if (e.deltaMode === 1) delta *= 20;
-          const step = Math.max(-100, Math.min(100, delta));
-          const zoomFactor = Math.exp(step * 0.0025);
-          zoomAtScreenPoint(zoomFactor, e.clientX, e.clientY);
-        }
-      }, { passive: false });
+    function exportPng() {
+      const svg = document.querySelector('#mermaid-target svg');
+      if (!svg) return;
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(svg);
+      const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+      const URLObj = window.URL || window.webkitURL || window;
+      const blobURL = URLObj.createObjectURL(svgBlob);
+      
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = svg.getBoundingClientRect().width * 2;
+        canvas.height = svg.getBoundingClientRect().height * 2;
+        const context = canvas.getContext('2d');
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        
+        const png = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = png;
+        a.download = 'diagrama_especiales.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      image.src = blobURL;
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initGestures();
-      updateWheelModeUI();
-      renderDiagram();
+    window.addEventListener('DOMContentLoaded', renderDiagram);
+    window.addEventListener('resize', () => {
+      const svg = document.querySelector('#mermaid-target svg');
+      if (svg && panZoomInstance) fitOptimalReading(svg);
     });
   </script>
 </body>
