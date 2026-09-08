@@ -1,0 +1,53 @@
+flowchart LR
+%% =========================================================================
+%% DIAGRAMA EJECUTIVO MACRO - PAS MUNICIPALIDAD PROVINCIAL DE CHICLAYO
+%% VISTA PANORÁMICA DE 4 MACRO-FASES + SISTEMA DE GARANTÍAS Y CONCLUSIONES
+%% =========================================================================
+
+INI(["🏁 <b>INICIO PAS</b><br/><small>Campo o Denuncia</small>"]):::termStart
+
+subgraph M1 ["1. DETECCIÓN Y CAMPO"]
+    D1["👮 <b>Fiscalización In Situ</b><br/><b>Papeleta de Infracción</b><br/><small>Subsanación o 60% dcto en 5 días</small>"]:::destacado
+    EXT1(["✅ <b>Conclusión Fase 1:</b><br/>• Cese in situ (Sin sanción)<br/>• Pago 60% dcto (5 días)<br/>• Archivo no identificado"]):::termOk
+end
+
+subgraph M2 ["2. INSTRUCCIÓN FORMAL"]
+    D2["⚖️ <b>Subgerencia Fiscalizadora</b><br/><b>Imputación + Descargos</b><br/><small>Emisión de IFI (Art. 41 RAS)</small>"]:::destacado
+    EXT2(["✅ <b>Conclusión Fase 2:</b><br/>• Archivo preliminar mérito<br/>• Pago 40% dcto previo inicio<br/>• Eximente pleno / Absolución<br/>• Archivo por Caducidad"]):::termOk
+end
+
+subgraph M3 ["3. SANCIÓN Y RECURSOS"]
+    D3["🏛️ <b>Gerencia Sancionadora</b><br/><b>Resolución de Sanción</b><br/><small>Reconsideración y Apelación GM</small>"]:::destacado
+    EXT3(["✅ <b>Conclusión Fase 3:</b><br/>• Absolución en Gerencia<br/>• Pago 20% dcto (15 días)<br/>• Revocación 1ra o 2da instancia"]):::termOk
+end
+
+subgraph M4 ["4. EJECUCIÓN COACTIVA"]
+    D4["💰 <b>SATCH (Cobranza Forzosa)</b><br/><b>Resolución REC + Embargo</b><br/><small>Cobro de multa + costas legales</small>"]:::destacado
+    EXT4(["🏁 <b>Conclusión Fase 4:</b><br/>• Pago coactivo total (Extinción)<br/>• Ejecución forzosa consumada"]):::termWarn
+end
+
+subgraph M5 ["🛡️ RÉGIMEN DE GARANTÍAS"]
+    G1["⏱️ <b>Caducidad:</b> 9 a 12 meses<br/>⚖️ <b>Prescripción:</b> 4 años<br/>⚡ <b>Medidas Cautelares / Clausura</b>"]:::alerta
+end
+
+INI ==>|"<span class='edge-info'>Detección</span>"| D1
+D1 -.-> EXT1
+D1 ==>|"<span class='edge-info'>Papeleta y expediente</span>"| D2
+D2 -.-> EXT2
+D2 ==>|"<span class='edge-info'>Informe Final (IFI)</span>"| D3
+D3 -.-> EXT3
+D3 ==>|"<span class='edge-no'>Sanción Firme</span>"| D4
+D4 -.-> EXT4
+D2 -.->|"<span class='edge-warn'>Control de plazos</span>"| G1
+
+classDef termStart fill:#0284c7,stroke:#0369a1,stroke-width:3px,color:#ffffff,font-weight:bold
+classDef destacado fill:#eff6ff,stroke:#2563eb,stroke-width:2.5px,color:#1e3a8a,font-weight:bold
+classDef termOk fill:#ecfdf5,stroke:#10b981,stroke-width:2.5px,color:#065f46,font-weight:bold
+classDef termWarn fill:#fef2f2,stroke:#ef4444,stroke-width:2.5px,color:#991b1b,font-weight:bold
+classDef alerta fill:#fffbeb,stroke:#d97706,stroke-width:2.5px,color:#78350f,font-weight:bold
+
+style M1 fill:#f0f9ff,stroke:#0284c7,stroke-width:2px
+style M2 fill:#f8fafc,stroke:#475569,stroke-width:2px
+style M3 fill:#faf5ff,stroke:#9333ea,stroke-width:2px
+style M4 fill:#fff1f2,stroke:#e11d48,stroke-width:2px
+style M5 fill:#fffbeb,stroke:#d97706,stroke-width:2px

@@ -1,0 +1,117 @@
+flowchart TD
+%% =========================================================================
+%% PROCEDIMIENTOS ESPECIALES Y CONTROL DE CADUCIDAD (PAS - MUNICIPALIDAD DE CHICLAYO)
+%% BASE LEGAL: ARTS. 60, 62, 63, 65, 66, 67, 70, 72 RAS / LEY N° 27444
+%% =========================================================================
+
+subgraph SG_CAD ["⏱️ CONTROL ESTRICTO DE CADUCIDAD Y PRESCRIPCIÓN (ARTS. 60, 62, 63 RAS / LEY 27444)"]
+    direction TB
+    C_INI(["⏱️ <b>Notificación Formal de Imputación de Cargos</b><br/><small>Disparo del plazo de caducidad</small>"]):::termStart
+    
+    C_9M{"¿Resolución final notificada<br/>dentro de los 9 meses?<br/><small>(Art. 62 RAS)</small>"}:::decision
+    C_OK(["✅ <b>Trámite Oportuno (Sin Caducidad)</b><br/><small>PAS válido y eficaz</small><br/><code>📌 PAS_EN_PLAZO</code>"]):::termOk
+    
+    C_AMP{"¿Ampliación motivada de 3 meses<br/>dictada ANTES del vencimiento?"}:::decision
+    C_12M{"¿Notificada dentro de<br/>los 12 meses ampliados?"}:::decision
+    
+    C_CAD(["🗄️ <b>DECLARACIÓN DE CADUCIDAD DEL PAS</b><br/><small>Archivo del expediente por exceso de plazo</small><br/><code>📌 ARCHIVADO_POR_CADUCIDAD</code>"]):::termWarn
+    
+    ALERT_CAD["⚠️ <b>PUNTO CIEGO DE AUDITORÍA</b><br/><small>Demoras en informes periciales o firma causan caducidad recurrente.<br/>Genera responsabilidad funcional disciplinaria</small>"]:::alerta
+    
+    C_MEDPROV["🛡️ <b>Vigencia Provisional de Medidas (Art. 62)</b><br/><small>Medidas complementarias siguen por 3 meses (excepto clausura)<br/>mientras se evalúa reinicio de nuevo PAS</small>"]:::proceso
+    
+    C_PRES{"¿Infracción ya prescribió?<br/><small>(Plazo: 4 años desde la papeleta)</small>"}:::decision
+    
+    C_FIN(["🗄️ <b>ARCHIVO DEFINITIVO POR PRESCRIPCIÓN</b><br/><small>Extinción total de potestad sancionadora</small><br/><code>📌 PRESCRIPCION_TOTAL</code>"]):::termWarn
+    C_REINICIO(["🔁 <b>Iniciar Nuevo PAS desde Fase 1</b><br/><small>Subgerencia evalúa nueva imputación</small><br/><code>📌 REINICIO_PAS</code>"]):::salto
+end
+
+subgraph SG_ESP ["🛡️ CUATRO PROCEDIMIENTOS ESPECIALES DE MEDIDAS COMPLEMENTARIAS (RAS)"]
+    direction TB
+    
+    %% Clausura
+    subgraph P_CLAU ["🔒 1. Clausura Temporal (Art. 65 RAS)"]
+        CL1["🧑💼 <b>Administrado subsana causa</b><br/><small>Solicita reapertura formal ante Mesa de Partes</small>"]:::proceso
+        CL2{"¿Municipalidad formula<br/>objeción en 48 horas?"}:::decision
+        CL_NO(["✅ <b>Levantamiento Automático</b><br/><small>Silencio positivo habilitante</small><br/><code>📌 CLAUSURA_LEVANTADA</code>"]):::termOk
+        CL_SI["⚠️ <b>Clausura Permanece Vigente</b><br/><small>Resolución denegatoria motivada</small>"]:::termWarn
+    end
+    
+    %% Retención
+    subgraph P_RET ["📦 2. Retención de Bienes (Arts. 66 y 72 RAS)"]
+        RT1["📦 <b>Custodia en Depósito Municipal</b><br/><small>• Perecibles: 1 día calendario<br/>• No perecibles: 30 días calendario</small>"]:::proceso
+        RT2{"¿Solicita devolución con pago<br/>de multa dentro del plazo?"}:::decision
+        RT_SI["✅ <b>Devolución del Bien Retenido</b><br/><small>Entrega mediante Acta de Devolución</small>"]:::termOk
+        RT_NO(["🗄️ <b>Declaración de Abandono</b><br/><small>Disposición final: donación a beneficencia</small><br/><code>📌 ABANDONO_DECLARADO</code>"]):::termWarn
+    end
+    
+    %% Sanidad
+    subgraph P_SAN ["🥫 3. Decomiso Sanitario (Art. 67 RAS)"]
+        SN1["🔬 <b>Análisis Bromatológico Pericial</b><br/><small>Subgerencia de Sanidad ejecuta en máx. 5 días</small>"]:::proceso
+        SN2{"¿Producto es calificado<br/>apto para consumo humano?"}:::decision
+        SN_APTO["✅ <b>Devolución Inmediata</b><br/><small>Entrega de producto apto al administrado</small>"]:::termOk
+        SN_NOAPTO(["🚨 <b>Decomiso y Destrucción Final</b><br/><small>Incineración o disposición en relleno sanitario</small><br/><code>📌 DECOMISO_DESTRUIDO</code>"]):::termWarn
+    end
+    
+    %% Obras
+    subgraph P_OBRA ["🏗️ 4. Paralización de Obra (Art. 70 RAS)"]
+        OB1["🏗️ <b>Administrado solicita levantamiento</b><br/><small>Plazo de subsanación: 30 días hábiles (única vez)</small>"]:::proceso
+        OB2["🔍 <b>Subsanación de observaciones (15 d)</b><br/><small>Reinspección in situ por inspectores de obras</small>"]:::proceso
+        OB3{"¿Inspectores formulan<br/>objeción motivada in situ?"}:::decision
+        OB_OK(["✅ <b>Observaciones Levantadas</b><br/><small>Silencio positivo: reinicio de trabajos</small><br/><code>📌 OBRA_REANUDADA</code>"]):::termOk
+        OB_NO["⚠️ <b>Continúa Obra Paralizada</b><br/><small>Reiteración de medidas coercitivas</small>"]:::termWarn
+    end
+end
+
+%% Conexiones Caducidad
+C_INI --> C_9M
+C_9M -->|"<span class='edge-yes'>✅ SÍ: En plazo (<= 9 meses)</span>"| C_OK
+C_9M -->|"<span class='edge-no'>❌ NO: Excede 9 meses</span>"| C_AMP
+
+C_AMP -->|"<span class='edge-yes'>✅ SÍ: Ampliación dictada a tiempo</span>"| C_12M
+C_AMP -->|"<span class='edge-no'>❌ NO: Sin ampliación formal</span>"| C_CAD
+
+C_12M -->|"<span class='edge-yes'>✅ SÍ: En plazo (<= 12 meses)</span>"| C_OK
+C_12M -->|"<span class='edge-no'>❌ NO: Excede 12 meses</span>"| C_CAD
+
+C_CAD -.-> ALERT_CAD
+C_CAD --> C_MEDPROV
+C_MEDPROV --> C_PRES
+C_PRES -->|"<span class='edge-no'>❌ Infracción Prescrita (> 4 años)</span>"| C_FIN
+C_PRES -->|"<span class='edge-yes'>✅ Acción vigente (<= 4 años)</span>"| C_REINICIO
+
+%% Conexiones Clausura
+CL1 --> CL2
+CL2 -->|"<span class='edge-yes'>✅ NO Objeta (Silencio 48h)</span>"| CL_NO
+CL2 -->|"<span class='edge-no'>❌ SÍ Objeta motivadamente</span>"| CL_SI
+
+%% Conexiones Retención
+RT1 --> RT2
+RT2 -->|"<span class='edge-yes'>✅ SÍ: Paga y reclama a tiempo</span>"| RT_SI
+RT2 -->|"<span class='edge-no'>❌ NO: Vence plazo de custodia</span>"| RT_NO
+
+%% Conexiones Sanidad
+SN1 --> SN2
+SN2 -->|"<span class='edge-yes'>✅ Apto para consumo</span>"| SN_APTO
+SN2 -->|"<span class='edge-no'>❌ No apto (Riesgo sanitario)</span>"| SN_NOAPTO
+
+%% Conexiones Obra
+OB1 --> OB2 --> OB3
+OB3 -->|"<span class='edge-yes'>✅ Conforme (Sin objeción)</span>"| OB_OK
+OB3 -->|"<span class='edge-no'>❌ Objeción técnica fundada</span>"| OB_NO
+
+%% Clases y estilos
+classDef termStart fill:#0284c7,stroke:#0369a1,stroke-width:3px,color:#ffffff,font-weight:bold
+classDef termOk fill:#ecfdf5,stroke:#10b981,stroke-width:2.5px,color:#065f46,font-weight:bold
+classDef termWarn fill:#fef2f2,stroke:#ef4444,stroke-width:2.5px,color:#991b1b,font-weight:bold
+classDef proceso fill:#ffffff,stroke:#64748b,stroke-width:2px,color:#1e293b
+classDef decision fill:#eef2ff,stroke:#4f46e5,stroke-width:2.5px,color:#1e1b4b,font-weight:bold
+classDef alerta fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#9a3412
+classDef salto fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,stroke-dasharray:4 3,color:#581c87
+
+style SG_CAD fill:#f8fafc,stroke:#475569,stroke-width:2.5px
+style SG_ESP fill:#faf5ff,stroke:#9333ea,stroke-width:2.5px
+style P_CLAU fill:#ffffff,stroke:#0284c7,stroke-width:1.5px
+style P_RET fill:#ffffff,stroke:#10b981,stroke-width:1.5px
+style P_SAN fill:#ffffff,stroke:#ea580c,stroke-width:1.5px
+style P_OBRA fill:#ffffff,stroke:#8b5cf6,stroke-width:1.5px
