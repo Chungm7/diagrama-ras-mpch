@@ -47,6 +47,7 @@ CSS_SHARED = """
     width: 100% !important;
     height: 100% !important;
     max-width: none !important;
+    touch-action: none;
   }
   
   /* BADGES DE DECISIÓN Y FLUJO - MÁXIMO CONTRASTE Y LEGIBILIDAD */
@@ -185,6 +186,226 @@ CSS_SHARED = """
   ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
+"""
+
+NAV_HANDLER_JS = """
+    // =========================================================================
+    // NAVEGACIÓN MEJORADA: PELLIZCO PARA ZOOM + 2 DEDOS PARA DESPLAZAR
+    // =========================================================================
+    let currentNavHandler = null;
+    let wheelMode = 'pan'; // 'pan' (2 dedos para desplazar) o 'zoom' (rueda zoom)
+
+    function getSvgPoint(clientX, clientY, svgElement) {
+      const p = svgElement.createSVGPoint();
+      p.x = clientX;
+      p.y = clientY;
+      try {
+        const screenCTM = svgElement.getScreenCTM();
+        if (screenCTM) {
+          return p.matrixTransform(screenCTM.inverse());
+        }
+      } catch (err) {}
+      return p;
+    }
+
+    function createNavigationHandler(svgElement, instance) {
+      const container = document.getElementById('container') || svgElement;
+
+      let touchState = {
+        mode: 'none',
+        startX: 0,
+        startY: 0,
+        lastX: 0,
+        lastY: 0,
+        lastMidX: 0,
+        lastMidY: 0,
+        lastDist: 0,
+        isDragging: false
+      };
+
+      let mouseState = {
+        down: false,
+        startX: 0,
+        startY: 0,
+        isDragging: false
+      };
+
+      function onMouseDown(e) {
+        if (e.button !== 0) return;
+        mouseState.down = true;
+        mouseState.startX = e.clientX;
+        mouseState.startY = e.clientY;
+        mouseState.isDragging = false;
+      }
+
+      function onMouseMove(e) {
+        if (!mouseState.down) return;
+        if (Math.hypot(e.clientX - mouseState.startX, e.clientY - mouseState.startY) > 5) {
+          mouseState.isDragging = true;
+        }
+      }
+
+      function onMouseUp() {
+        mouseState.down = false;
+        setTimeout(() => { mouseState.isDragging = false; }, 60);
+      }
+
+      function onWheel(e) {
+        if (!instance) return;
+        e.preventDefault();
+
+        // 1. Pellizco en trackpad o Ctrl + Rueda: zoom suave centrado en la posición del cursor
+        if (e.ctrlKey) {
+          const zoomFactor = Math.exp(-e.deltaY * 0.006);
+          const pt = getSvgPoint(e.clientX, e.clientY, svgElement);
+          instance.zoomAtPointBy(zoomFactor, pt);
+          return;
+        }
+
+        // 2. Modo Rueda Zoom si el usuario lo activó en el botón
+        if (wheelMode === 'zoom') {
+          const delta = e.deltaY || e.deltaX;
+          const zoomFactor = delta > 0 ? 0.88 : 1.14;
+          const pt = getSvgPoint(e.clientX, e.clientY, svgElement);
+          instance.zoomAtPointBy(zoomFactor, pt);
+          return;
+        }
+
+        // 3. Modo Desplazamiento por defecto ('2 Dedos: Desplazar')
+        // Permite direccionar de derecha a izquierda o verticalmente a través de todo el flujo
+        instance.panBy({ x: -e.deltaX, y: -e.deltaY });
+      }
+
+      function onTouchStart(e) {
+        if (!instance) return;
+        if (e.touches.length === 1) {
+          touchState.mode = 'single';
+          touchState.startX = e.touches[0].clientX;
+          touchState.startY = e.touches[0].clientY;
+          touchState.lastX = touchState.startX;
+          touchState.lastY = touchState.startY;
+          touchState.isDragging = false;
+        } else if (e.touches.length >= 2) {
+          touchState.mode = 'pinch';
+          touchState.isDragging = true;
+          const t1 = e.touches[0];
+          const t2 = e.touches[1];
+          touchState.lastMidX = (t1.clientX + t2.clientX) / 2;
+          touchState.lastMidY = (t1.clientY + t2.clientY) / 2;
+          touchState.lastDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        }
+      }
+
+      function onTouchMove(e) {
+        if (!instance) return;
+        e.preventDefault();
+
+        if (e.touches.length >= 2) {
+          const t1 = e.touches[0];
+          const t2 = e.touches[1];
+          const midX = (t1.clientX + t2.clientX) / 2;
+          const midY = (t1.clientY + t2.clientY) / 2;
+          const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+
+          if (touchState.mode !== 'pinch') {
+            touchState.mode = 'pinch';
+            touchState.lastMidX = midX;
+            touchState.lastMidY = midY;
+            touchState.lastDist = dist;
+            touchState.isDragging = true;
+            return;
+          }
+
+          // A) Direccionar el flujo con 2 dedos (Pan horizontal y vertical fluido)
+          const dx = midX - touchState.lastMidX;
+          const dy = midY - touchState.lastMidY;
+          if (Math.abs(dx) > 0.2 || Math.abs(dy) > 0.2) {
+            instance.panBy({ x: dx, y: dy });
+          }
+
+          // B) Gesto de pellizco para hacer zoom continuo centrado en el punto medio
+          if (touchState.lastDist > 10 && dist > 10) {
+            const factor = dist / touchState.lastDist;
+            if (factor > 0.5 && factor < 2.0 && Math.abs(factor - 1) > 0.003) {
+              const pt = getSvgPoint(midX, midY, svgElement);
+              instance.zoomAtPointBy(factor, pt);
+            }
+          }
+
+          touchState.lastMidX = midX;
+          touchState.lastMidY = midY;
+          touchState.lastDist = dist;
+        } else if (e.touches.length === 1 && touchState.mode === 'single') {
+          const t = e.touches[0];
+          const dx = t.clientX - touchState.lastX;
+          const dy = t.clientY - touchState.lastY;
+          const moved = Math.hypot(t.clientX - touchState.startX, t.clientY - touchState.startY);
+          if (moved > 6) {
+            touchState.isDragging = true;
+          }
+          if (touchState.isDragging) {
+            instance.panBy({ x: dx, y: dy });
+          }
+          touchState.lastX = t.clientX;
+          touchState.lastY = t.clientY;
+        }
+      }
+
+      function onTouchEnd(e) {
+        if (e.touches.length === 1) {
+          touchState.mode = 'single';
+          touchState.lastX = e.touches[0].clientX;
+          touchState.lastY = e.touches[0].clientY;
+          touchState.startX = touchState.lastX;
+          touchState.startY = touchState.lastY;
+          touchState.isDragging = true;
+        } else if (e.touches.length === 0) {
+          touchState.mode = 'none';
+          setTimeout(() => { touchState.isDragging = false; }, 80);
+        }
+      }
+
+      container.addEventListener('wheel', onWheel, { passive: false });
+      container.addEventListener('touchstart', onTouchStart, { passive: false });
+      container.addEventListener('touchmove', onTouchMove, { passive: false });
+      container.addEventListener('touchend', onTouchEnd, { passive: false });
+      container.addEventListener('touchcancel', onTouchEnd, { passive: false });
+
+      window.addEventListener('mousedown', onMouseDown, true);
+      window.addEventListener('mousemove', onMouseMove, true);
+      window.addEventListener('mouseup', onMouseUp, true);
+
+      return {
+        isUserDragging: () => touchState.isDragging || mouseState.isDragging,
+        destroy: () => {
+          container.removeEventListener('wheel', onWheel);
+          container.removeEventListener('touchstart', onTouchStart);
+          container.removeEventListener('touchmove', onTouchMove);
+          container.removeEventListener('touchend', onTouchEnd);
+          container.removeEventListener('touchcancel', onTouchEnd);
+          window.removeEventListener('mousedown', onMouseDown, true);
+          window.removeEventListener('mousemove', onMouseMove, true);
+          window.removeEventListener('mouseup', onMouseUp, true);
+        }
+      };
+    }
+
+    function toggleWheelMode() {
+      const btn = document.getElementById('wheel-mode-btn');
+      if (wheelMode === 'pan') {
+        wheelMode = 'zoom';
+        if (btn) {
+          btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-plus text-amber-600"></i> <span class="hidden sm:inline">Rueda: Zoom</span>';
+          btn.title = "Modo Zoom activo: La rueda hace zoom (o usa pellizco con 2 dedos)";
+        }
+      } else {
+        wheelMode = 'pan';
+        if (btn) {
+          btn.innerHTML = '<i class="fa-solid fa-hand text-sky-600"></i> <span class="hidden sm:inline">2 Dedos: Desplazar</span>';
+          btn.title = "Modo Desplazamiento activo: 2 dedos en trackpad desplazan el diagrama por el flujo";
+        }
+      }
+    }
 """
 
 def generate_standalone_html(title, subtitle, filename, mmd_content, nav_active, quick_jumps):
@@ -389,7 +610,7 @@ def generate_standalone_html(title, subtitle, filename, mmd_content, nav_active,
       <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-fuchsia-500 inline-block"></span> Acción del Administrado</span>
     </div>
     <div class="flex items-center gap-3 font-medium">
-      <span>💡 Haz clic en cualquier nodo para ver detalles y cargos</span>
+      <span>💡 2 dedos para navegar flujo • Pellizco para zoom • Clic en nodo para ver detalles</span>
     </div>
   </footer>
 
@@ -453,6 +674,8 @@ def generate_standalone_html(title, subtitle, filename, mmd_content, nav_active,
     let searchMatches = [];
     let currentMatchIndex = -1;
 
+{NAV_HANDLER_JS}
+
     async function renderDiagram() {{
       const rawCode = document.getElementById('raw-mermaid').innerText.trim();
       const target = document.getElementById('mermaid-target');
@@ -480,8 +703,18 @@ def generate_standalone_html(title, subtitle, filename, mmd_content, nav_active,
             mouseWheelZoomEnabled: false,
             customEventsHandler: {{
               haltEventListeners: ['touchstart', 'touchend', 'touchmove', 'touchleave', 'touchcancel'],
-              init: function() {{}},
-              destroy: function() {{}}
+              init: function(options) {{
+                if (currentNavHandler) {{
+                  currentNavHandler.destroy();
+                }}
+                currentNavHandler = createNavigationHandler(options.svgElement, options.instance);
+              }},
+              destroy: function() {{
+                if (currentNavHandler) {{
+                  currentNavHandler.destroy();
+                  currentNavHandler = null;
+                }}
+              }}
             }}
           }});
 
@@ -576,12 +809,14 @@ def generate_standalone_html(title, subtitle, filename, mmd_content, nav_active,
     function setupNodeInteractions(svg) {{
       svg.querySelectorAll('.node').forEach(node => {{
         node.addEventListener('click', (e) => {{
+          if (currentNavHandler && currentNavHandler.isUserDragging()) return;
           e.stopPropagation();
           inspectNode(node);
         }});
       }});
 
       svg.addEventListener('click', () => {{
+        if (currentNavHandler && currentNavHandler.isUserDragging()) return;
         if (currentlyInspectedElement) {{
           currentlyInspectedElement.classList.remove('node-selected');
           currentlyInspectedElement = null;
@@ -764,21 +999,6 @@ def generate_standalone_html(title, subtitle, filename, mmd_content, nav_active,
         y: (container.clientHeight / 2) - (bbox.y + bbox.height / 2) * zoom
       }});
       inspectNode(target);
-    }}
-
-    function toggleWheelMode() {{
-      if (!panZoomInstance) return;
-      const btn = document.getElementById('wheel-mode-btn');
-      const isZoomEnabled = panZoomInstance.isMouseWheelZoomEnabled();
-      if (isZoomEnabled) {{
-        panZoomInstance.disableMouseWheelZoom();
-        btn.innerHTML = '<i class="fa-solid fa-hand text-sky-600"></i> <span class="hidden sm:inline">2 Dedos: Desplazar</span>';
-        btn.title = "Modo táctil/trackpad: Desplazamiento activado";
-      }} else {{
-        panZoomInstance.enableMouseWheelZoom();
-        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-plus text-amber-600"></i> <span class="hidden sm:inline">Rueda: Zoom</span>';
-        btn.title = "Modo ratón: Zoom con rueda activado";
-      }}
     }}
 
     function toggleLegendModal() {{
@@ -1103,7 +1323,7 @@ html_index = f"""<!DOCTYPE html>
       <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-fuchsia-500 inline-block"></span> Acción del Administrado</span>
     </div>
     <div class="flex items-center gap-3 font-medium">
-      <span>💡 Haz clic en cualquier nodo para ver responsabilidades y cargos</span>
+      <span>💡 2 dedos para navegar flujo • Pellizco para zoom • Clic en nodo para ver detalles</span>
     </div>
   </footer>
 
@@ -1243,6 +1463,8 @@ html_index = f"""<!DOCTYPE html>
     let searchMatches = [];
     let currentMatchIndex = -1;
 
+{NAV_HANDLER_JS}
+
     async function switchView(viewName) {{
       currentView = viewName;
       
@@ -1295,8 +1517,18 @@ html_index = f"""<!DOCTYPE html>
             mouseWheelZoomEnabled: false,
             customEventsHandler: {{
               haltEventListeners: ['touchstart', 'touchend', 'touchmove', 'touchleave', 'touchcancel'],
-              init: function() {{}},
-              destroy: function() {{}}
+              init: function(options) {{
+                if (currentNavHandler) {{
+                  currentNavHandler.destroy();
+                }}
+                currentNavHandler = createNavigationHandler(options.svgElement, options.instance);
+              }},
+              destroy: function() {{
+                if (currentNavHandler) {{
+                  currentNavHandler.destroy();
+                  currentNavHandler = null;
+                }}
+              }}
             }}
           }});
 
@@ -1407,12 +1639,14 @@ html_index = f"""<!DOCTYPE html>
     function setupNodeInteractions(svg) {{
       svg.querySelectorAll('.node').forEach(node => {{
         node.addEventListener('click', (e) => {{
+          if (currentNavHandler && currentNavHandler.isUserDragging()) return;
           e.stopPropagation();
           inspectNode(node);
         }});
       }});
 
       svg.addEventListener('click', () => {{
+        if (currentNavHandler && currentNavHandler.isUserDragging()) return;
         if (currentlyInspectedElement) {{
           currentlyInspectedElement.classList.remove('node-selected');
           currentlyInspectedElement = null;
@@ -1597,21 +1831,6 @@ html_index = f"""<!DOCTYPE html>
       inspectNode(target);
     }}
 
-    function toggleWheelMode() {{
-      if (!panZoomInstance) return;
-      const btn = document.getElementById('wheel-mode-btn');
-      const isZoomEnabled = panZoomInstance.isMouseWheelZoomEnabled();
-      if (isZoomEnabled) {{
-        panZoomInstance.disableMouseWheelZoom();
-        btn.innerHTML = '<i class="fa-solid fa-hand text-sky-600"></i> <span class="hidden sm:inline">2 Dedos: Desplazar</span>';
-        btn.title = "Modo táctil/trackpad: Desplazamiento activado";
-      }} else {{
-        panZoomInstance.enableMouseWheelZoom();
-        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-plus text-amber-600"></i> <span class="hidden sm:inline">Rueda: Zoom</span>';
-        btn.title = "Modo ratón: Zoom con rueda activado";
-      }}
-    }}
-
     function toggleRasModal() {{
       const modal = document.getElementById('ras-modal');
       modal.classList.toggle('hidden');
@@ -1695,6 +1914,7 @@ html_index = f"""<!DOCTYPE html>
 TARGET_DIRS = [BASE_DIR, os.path.join(BASE_DIR, "FlujoSegmentadoRAS")]
 
 for directory in TARGET_DIRS:
+    os.makedirs(directory, exist_ok=True)
     with open(os.path.join(directory, "diagrama_optimizado.html"), "w", encoding="utf-8") as f:
         f.write(html_optimizado)
     with open(os.path.join(directory, "diagrama_especiales.html"), "w", encoding="utf-8") as f:
